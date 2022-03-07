@@ -1,0 +1,22 @@
+{
+  "name": "angular-task-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hanh2212/angular-task-management.git"
+  },
+  "author": "HanhDo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hanh2212/angular-task-management/issues"
+  },
+  "homepage": "https://github.com/Hanh2212/angular-task-management#readme",
+  "dependencies": {
+    "tailwindcss": "^3.0.23"
+  }
+}
