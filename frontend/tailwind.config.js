@@ -1,7 +1,15 @@
 module.exports = {
-  content: ['./src/**/*.{htmk, js}'],
+  content: ["./src/**/*.{html, js, ts}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'title-grey': '#444',
+        'input-bg': '#f0f0f0'
+      },
+      borderRadius: {
+        'input-border': '55px'
+      }
+    },
   },
   plugins: [],
 }

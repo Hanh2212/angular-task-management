@@ -134,7 +134,7 @@ form.sign-in-form {
   border-color: #4481eb;
 }
 
-.btn {
+.btn, button {
   width: 150px;
   background-color: #5465FF;
   border: none;
@@ -149,7 +149,7 @@ form.sign-in-form {
   transition: 0.5s;
 }
 
-.btn:hover {
+.btn:hover, button.btn:hover {
   background-color: #4d84e2;
 }
 .panels-container {

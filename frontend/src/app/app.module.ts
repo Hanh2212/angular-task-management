@@ -13,13 +13,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtInterceptor } from './core/helper/jwt.interceptor';
 import { ErrorInterceptor } from './core/helper/error.interceptor';
 import { ApiPrefixInterceptor } from './core/helper/api-prefix.interceptor';
-import { TasksComponent } from './views/tasks/tasks.component';
+import { HeaderComponent } from './components/header/header.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

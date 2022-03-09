@@ -1,33 +1,33 @@
 <div class="container" [ngClass]="isSignUp === true ? 'sign-up-mode' : '' ">
-  <div class="forms-container" style="absolute w-full h-full top-0 left-0">
-    <div class="signin-signup" style="absolute">
-      <form action="#" class="sign-in-form">
+  <div class="forms-container">
+    <div class="signin-signup">
+      <form [formGroup]="loginForm" class="sign-in-form">
         <h2 class="title">Đăng nhập</h2>
         <div class="input-field">
           <i class="fas fa-user"></i>
-          <input type="text" placeholder="Tên đăng nhập" />
+          <input type="text" formControlName="username" placeholder="Tên đăng nhập" />
         </div>
         <div class="input-field">
           <i class="fas fa-lock"></i>
-          <input type="password" placeholder="Mật khẩu" />
+          <input type="password" formControlName="password" placeholder="Mật khẩu" />
         </div>
-        <input type="submit" value="Đăng nhập" class="btn solid" />
+        <button type="submit" class="btn solid" (click)="login()">Đăng nhập</button>
       </form>
-      <form action="#" class="sign-up-form">
+      <form [formGroup]="signupForm" class="sign-up-form">
         <h2 class="title">Đăng ký</h2>
         <div class="input-field">
           <i class="fas fa-user"></i>
-          <input type="text" placeholder="Tên đăng nhập" />
+          <input type="text" formControlName="username" placeholder="Tên đăng nhập" />
         </div>
         <div class="input-field">
           <i class="fas fa-envelope"></i>
-          <input type="email" placeholder="Email" />
+          <input type="email" formControlName="email" placeholder="Email" />
         </div>
         <div class="input-field">
           <i class="fas fa-lock"></i>
-          <input type="password" placeholder="Mật khẩu" />
+          <input type="password" formControlName="password" placeholder="Mật khẩu" />
         </div>
-        <input type="submit" class="btn" value="Đăng ký" />
+        <button type="submit" class="btn" (click)="signUp()">Đăng ký</button>
       </form>
     </div>
   </div>
