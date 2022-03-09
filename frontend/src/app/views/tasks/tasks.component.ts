@@ -15,9 +15,12 @@ export class TasksComponent implements OnInit {
 
   selectedListId!: string;
   isVisible = false;
+  isVisibleTask = false;
+  isEdit = false;
   titleModal = '';
 
   listForm!: FormGroup;
+  taskForm!: FormGroup;
 
   constructor(private taskService: TaskService,
               private modalService: NzModalService,
@@ -27,33 +30,70 @@ export class TasksComponent implements OnInit {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
+    this.taskForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', Validators.required],
+    });
     this.tasks = [
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
     ]
   }
 
   openCreateModal(): void {
     this.isVisible = true;
-    this.titleModal = 'Thêm mới danh sách';
-    this.modalService.confirm({
-      nzTitle: 'Thêm mới danh sách',
-      nzContent: 'Bla bla ...',
-      nzOkText: 'OK',
-      nzCancelText: 'Cancel'
-    });
+    this.listForm.reset();
+  }
+
+  openCreateTaskModal(): void {
+    this.isEdit = false;
+    this.isVisibleTask = true;
+    this.taskForm.reset();
+  }
+
+  openEditTaskModal(task: Tasks): void {
+    this.isVisibleTask = true;
+    this.isEdit = true;
+    this.taskForm.reset();
+    this.taskForm.patchValue({
+      id: task._id,
+      name: task.title,
+      description: task.description
+    })
+  }
+
+  submitCreateList(): void {
+    for (const key in this.listForm.controls) {
+      this.listForm.controls[key].markAsDirty();
+      this.listForm.controls[key].updateValueAndValidity();
+    }
+    if (this.listForm.invalid) {
+      return;
+    }
+  }
+
+  submitCreateTask(): void {
+    for (const key in this.taskForm.controls) {
+      this.taskForm.controls[key].markAsDirty();
+      this.taskForm.controls[key].updateValueAndValidity();
+    }
+    if (this.taskForm.invalid) {
+      return;
+    }
+    console.log('ahihi');
+    this.closeTaskModal();
   }
 
   closeModal(): void {
     this.isVisible = false;
   }
 
-  submitCreate(): void {
-
+  closeTaskModal(): void {
+    this.isVisibleTask = false;
   }
 
   showConfirm(): void {

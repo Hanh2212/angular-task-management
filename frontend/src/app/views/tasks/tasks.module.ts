@@ -7,6 +7,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzInputModule } from 'ng-zorro-antd/input';
+
 @NgModule({
   declarations: [TasksComponent],
   imports: [
@@ -17,6 +19,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     NzModalModule,
     NzFormModule,
     NzDropDownModule,
+    NzInputModule,
   ],
   exports: [TasksComponent]
 })
