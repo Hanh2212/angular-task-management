@@ -1,5 +1,5 @@
-<div class="centered-content">
-  <div class="task-manager-container">
+<div class="row centered-content">
+  <div class="col-8 offset-2 task-manager-container">
     <div class="sidebar has-background-white">
       <h1 class="title has-text-primary">
         Danh sách
@@ -17,60 +17,61 @@
 
     </div>
 
-    <div class="task-list-container has-background-light">
-      <div *ngIf="tasks">
-        <div class="top-bar">
-          <h1 class="title has-text-primary">
-            Nhiệm vụ
-          </h1>
-          <div class="dropdown is-hoverable is-right">
-            <!-- <div class="dropdown-trigger">
-              <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                <span class="icon is-small">
-                  <i class="fas fa-cog" aria-hidden="true"></i>
-                </span>
-              </button>
-            </div> -->
-            <!-- <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-              <div class="dropdown-content">
-                <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
-                  Edit
-                </a>
-                <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger">
-                  Delete
-                </a>
-              </div>
-            </div> -->
+    <div class="row task-list-container has-background-light">
+      <div class="col-12">
+        <div *ngIf="tasks">
+          <div class="top-bar">
+            <h1 class="title has-text-primary">
+              Nhiệm vụ
+            </h1>
+            <div class="dropdown is-hoverable is-right">
+              <!-- <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                  <span class="icon is-small">
+                    <i class="fas fa-cog" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div> -->
+              <!-- <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                <div class="dropdown-content">
+                  <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
+                    Edit
+                  </a>
+                  <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger">
+                    Delete
+                  </a>
+                </div>
+              </div> -->
+            </div>
           </div>
+
+          <!-- Task Elements -->
+          <!-- <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
+            <div class="task-text d-flex flex-column">
+              <p>{{ task.title }}</p>
+              <small class="text-secondary">{{ task.description }}</small>
+            </div>
+            <div class="task-buttons">
+              <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
+              <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
+            </div>
+          </div>
+
+          <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the add button to create
+            a new task.</h3>
+          <div class="row mt-2 d-flex justify-content-end align-items-center">
+            <div class="col-1">
+              <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
+            </div>
+          </div> -->
+          <app-task-item [tasks]="tasks"></app-task-item>
         </div>
 
-        <!-- Task Elements -->
-        <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
-          <div class="task-text d-flex flex-column">
-            <p>{{ task.title }}</p>
-            <small class="text-secondary">{{ task.description }}</small>
-          </div>
-          <div class="task-buttons">
-            <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
-            <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
-          </div>
-        </div>
-
-        <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the add button to create
-          a new task.</h3>
-        <div class="row mt-2 d-flex justify-content-end align-items-center">
-          <div class="col-1">
-            <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
-          </div>
+        <div *ngIf="!tasks">
+          <h3 class="empty-state-text">Please select a list from the sidebar</h3>
         </div>
       </div>
-
-      <div *ngIf="!tasks">
-        <h3 class="empty-state-text">Please select a list from the sidebar</h3>
-      </div>
-
     </div>
-
   </div>
 </div>
 
@@ -100,38 +101,3 @@
     </ng-template>
 </nz-modal>
 
-<nz-modal [nzWidth]="500" [(nzVisible)]="isVisibleTask" [nzTitle]="titleTask" [nzContent]="contentTask"
-  [nzFooter]="footerTask" [nzAutofocus]="null"
-  (nzOnCancel)="closeModal()">
-  <ng-template #titleTask>Thêm mới nhiệm vụ</ng-template>
-  <ng-template #contentTask class="p-2">
-    <div class="row mt-1">
-      <form [formGroup]="taskForm" class="m-0">
-        <nz-form-item class="row pl-0 ml-0 text-left">
-          <nz-form-control class="col-sm-12 col-md-12" [nzSpan]="12" nzHasFeedback [nzErrorTip]="nameErrorTpl">
-            <input nz-input formControlName="name" placeholder="Tên nhiệm vụ" />
-            <ng-template #nameErrorTpl let-control>
-              <ng-container *ngIf="control.hasError('required')">
-                Tên nhiệm vụ bắt buộc nhập
-              </ng-container>
-            </ng-template>
-          </nz-form-control>
-        </nz-form-item>
-        <nz-form-item class="row pl-0 ml-0 text-left">
-          <nz-form-control class="col-sm-12 col-md-12" [nzSpan]="12" nzHasFeedback [nzErrorTip]="desErrorTpl">
-            <textarea rows="4" nz-input formControlName="description" placeholder="Mô tả nhiệm vụ"></textarea>
-            <ng-template #desErrorTpl let-control>
-              <ng-container *ngIf="control.hasError('required')">
-                Mô tả nhiệm vụ bắt buộc nhập
-              </ng-container>
-            </ng-template>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-    </div>
-  </ng-template>
-    <ng-template #footerTask class="d-flex justify-content-between align-items-center text-center">
-      <button class="btn btn-danger" (click)="closeTaskModal()">Hủy</button>
-      <button class="btn btn-primary ml-2" (click)="submitCreateTask()">Lưu</button>
-    </ng-template>
-</nz-modal>

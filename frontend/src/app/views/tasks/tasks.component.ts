@@ -20,7 +20,7 @@ export class TasksComponent implements OnInit {
   titleModal = '';
 
   listForm!: FormGroup;
-  taskForm!: FormGroup;
+  // taskForm!: FormGroup;
 
   constructor(private taskService: TaskService,
               private modalService: NzModalService,
@@ -30,10 +30,19 @@ export class TasksComponent implements OnInit {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
-    this.taskForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      description: ['', Validators.required],
-    });
+    // this.taskForm = this.fb.group({
+    //   name: ['', [Validators.required, Validators.minLength(5)]],
+    //   description: ['', Validators.required],
+    // });
+
+    this.lists = [
+      {_id: '1', title: 'List 1'},
+      {_id: '2', title: 'List 2'},
+      {_id: '3', title: 'List 3'},
+      {_id: '4', title: 'List 4'},
+      {_id: '5', title: 'List 5'},
+    ];
+
     this.tasks = [
       {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
       {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
@@ -49,22 +58,22 @@ export class TasksComponent implements OnInit {
     this.listForm.reset();
   }
 
-  openCreateTaskModal(): void {
-    this.isEdit = false;
-    this.isVisibleTask = true;
-    this.taskForm.reset();
-  }
+  // openCreateTaskModal(): void {
+  //   this.isEdit = false;
+  //   this.isVisibleTask = true;
+  //   this.taskForm.reset();
+  // }
 
-  openEditTaskModal(task: Tasks): void {
-    this.isVisibleTask = true;
-    this.isEdit = true;
-    this.taskForm.reset();
-    this.taskForm.patchValue({
-      id: task._id,
-      name: task.title,
-      description: task.description
-    })
-  }
+  // openEditTaskModal(task: Tasks): void {
+  //   this.isVisibleTask = true;
+  //   this.isEdit = true;
+  //   this.taskForm.reset();
+  //   this.taskForm.patchValue({
+  //     id: task._id,
+  //     name: task.title,
+  //     description: task.description
+  //   })
+  // }
 
   submitCreateList(): void {
     for (const key in this.listForm.controls) {
@@ -76,17 +85,17 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  submitCreateTask(): void {
-    for (const key in this.taskForm.controls) {
-      this.taskForm.controls[key].markAsDirty();
-      this.taskForm.controls[key].updateValueAndValidity();
-    }
-    if (this.taskForm.invalid) {
-      return;
-    }
-    console.log('ahihi');
-    this.closeTaskModal();
-  }
+  // submitCreateTask(): void {
+  //   for (const key in this.taskForm.controls) {
+  //     this.taskForm.controls[key].markAsDirty();
+  //     this.taskForm.controls[key].updateValueAndValidity();
+  //   }
+  //   if (this.taskForm.invalid) {
+  //     return;
+  //   }
+  //   console.log('ahihi');
+  //   this.closeTaskModal();
+  // }
 
   closeModal(): void {
     this.isVisible = false;
@@ -105,27 +114,26 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  onTaskClick(task: Tasks) {
-    // we want to set the task to completed
-    this.taskService.complete(task).subscribe(() => {
-      // the task has been set to completed successfully
-      console.log("Completed successully!");
-      // task.completed = !task?.completed;
-    })
-  }
+  // onTaskClick(task: Tasks) {
+  //   // we want to set the task to completed
+  //   this.taskService.complete(task).subscribe(() => {
+  //     // the task has been set to completed successfully
+  //     console.log("Completed successully!");
+  //     // task.completed = !task?.completed;
+  //   })
+  // }
 
   onDeleteListClick() {
     this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
-      // this.router.navigate(['/lists']);
       console.log(res);
     })
   }
 
-  onDeleteTaskClick(id: string) {
-    this.taskService.deleteTask(id).subscribe((res: any) => {
-      this.tasks = this.tasks.filter(val => val._id !== id);
-      console.log(res);
-    })
-  }
+  // onDeleteTaskClick(id: string) {
+  //   this.taskService.deleteTask(id).subscribe((res: any) => {
+  //     this.tasks = this.tasks.filter(val => val._id !== id);
+  //     console.log(res);
+  //   })
+  // }
 
 }

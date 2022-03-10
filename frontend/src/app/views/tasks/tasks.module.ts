@@ -8,9 +8,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { TaskItemComponent } from './task-item/task-item.component';
 
 @NgModule({
-  declarations: [TasksComponent],
+  declarations: [TasksComponent, TaskItemComponent],
   imports: [
     CommonModule,
     TasksRoutingModule,

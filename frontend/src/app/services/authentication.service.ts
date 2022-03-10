@@ -29,13 +29,13 @@ export class AuthenticationService {
   }
 
   login(payload: LoginPayload): Observable<UserDetail> {
-    return this.httpClient.post<UserDetail>('/auth/login', payload);
+    return this.httpClient.post<UserDetail>('/login', payload);
   }
 
   logout() {
     this.setCredentials();
     localStorage.clear();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
   setCredentials(credentials?: UserDetail) {

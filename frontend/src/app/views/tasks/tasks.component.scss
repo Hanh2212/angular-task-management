@@ -37,30 +37,22 @@
   padding: 35px;
   background: white;
   border-radius: 5px;
-
   width: 350px;
   max-width: 350px;
 
 }
 .task-manager-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    width: 70%;
-    min-height: 25vh;
+  display: flex;
+  margin: 0 auto;
+  min-height: 25vh;
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
-
     width: 250px;
     background: white;
-    // border-right: 2px solid #ccc;
-
-    padding: 1.5em;
+    padding: 1em;
 
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -79,12 +71,10 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 1.75em;
+    padding: 1em;
 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-
-
     .top-bar {
         margin-bottom: 20px;
         display: flex;
@@ -99,22 +89,31 @@
 .list-menu {
     display: flex;
     flex-direction: column;
-    margin-top: 15px;
+    margin: .5em;
     flex-grow: 1;
 
+    a {
+      text-decoration: none;
+      height: 40px;
+      background: #F1FAFF;
+      // border: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: start;
+    }
+
     .list-menu-item {
-        display: flex;
-
-        align-items: center;
-        padding: 10px 15px;
+        padding: 5px;
         border-radius: 5px;
-
+        color: $primary;
+        font-weight: bold;
         width: 100%;
-        color: #5f5f5f;
         margin-bottom: 5px;
 
         &:hover {
-            background: #f8f8f8;
+            background: $primary;
+            color: $white;
         }
 
         &.is-active {
@@ -133,7 +132,6 @@
 
     align-items: center;
     box-shadow: 0 3px 2px #ccc;
-    // border: 1px solid #ccc;
 
     &:not(.complete) {
         cursor: pointer;
@@ -176,9 +174,6 @@
 }
 
 i.ri-add-circle-line {
-    // position: absolute;
-    // bottom: 35px;
-    // right: 35px;
     font-size: 2.5em;
     color: $primary;
 
