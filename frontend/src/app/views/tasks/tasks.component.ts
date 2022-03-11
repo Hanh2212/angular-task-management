@@ -12,6 +12,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class TasksComponent implements OnInit {
   lists!: Lists[];
   tasks!: Tasks[];
+  tasks2!: Tasks[];
 
   selectedListId!: string;
   isVisible = false;
@@ -50,7 +51,16 @@ export class TasksComponent implements OnInit {
       {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
       {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
       {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-    ]
+    ];
+
+    this.tasks2 = [
+      {_id: '1', _listId: 'List 1', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      {_id: '2', _listId: 'List 2', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      {_id: '3', _listId: 'List 3', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      {_id: '4', _listId: 'List 4', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      {_id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      {_id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true'},
+    ];
   }
 
   openCreateModal(): void {
@@ -74,6 +84,11 @@ export class TasksComponent implements OnInit {
   //     description: task.description
   //   })
   // }
+
+  showTasks(id: string): void {
+    console.log(id);
+    this.tasks = [...this.tasks2];
+  }
 
   submitCreateList(): void {
     for (const key in this.listForm.controls) {

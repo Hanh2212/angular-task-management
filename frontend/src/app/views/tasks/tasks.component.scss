@@ -89,7 +89,8 @@
 .list-menu {
     display: flex;
     flex-direction: column;
-    margin: .5em;
+    padding-left: 0;
+    padding-right: .75em;
     flex-grow: 1;
 
     a {

@@ -9,9 +9,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { TaskItemComponent } from './task-item/task-item.component';
+import { ContentLoaderModule } from '@ngneat/content-loader';
+import { LoadingContentComponent } from 'src/app/components/loading-content/loading-content.component';
 
 @NgModule({
-  declarations: [TasksComponent, TaskItemComponent],
+  declarations: [TasksComponent, TaskItemComponent, LoadingContentComponent],
   imports: [
     CommonModule,
     TasksRoutingModule,
@@ -21,6 +23,7 @@ import { TaskItemComponent } from './task-item/task-item.component';
     NzFormModule,
     NzDropDownModule,
     NzInputModule,
+    ContentLoaderModule
   ],
   exports: [TasksComponent]
 })

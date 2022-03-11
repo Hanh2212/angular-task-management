@@ -15,6 +15,7 @@ import { JwtInterceptor } from './core/helper/jwt.interceptor';
 import { ErrorInterceptor } from './core/helper/error.interceptor';
 import { ApiPrefixInterceptor } from './core/helper/api-prefix.interceptor';
 import { HeaderComponent } from './components/header/header.component';
+import { ContentLoaderModule } from '@ngneat/content-loader';
 
 registerLocaleData(en);
 
@@ -29,7 +30,8 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzDropDownModule
+    NzDropDownModule,
+    ContentLoaderModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,27 +1,28 @@
-<div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
-  <div class="task-text d-flex flex-column">
-    <p>{{ task.title }}</p>
-    <small class="text-secondary">{{ task.description }}</small>
+<app-loading-content *ngIf="isLoading"></app-loading-content>
+<div *ngIf="!isLoading" class="row">
+  <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
+    <div class="task-text d-flex flex-column">
+      <p>{{ task.title }}</p>
+      <small class="text-secondary">{{ task.description }}</small>
+    </div>
+    <div class="task-buttons">
+      <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
+      <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
+    </div>
   </div>
-  <div class="task-buttons">
-    <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
-    <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
-  </div>
-</div>
 
-<h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the add button to create
-  a new task.</h3>
+  <h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
+  </h3>
 
-
-<div class="row mt-2 d-flex justify-content-end align-items-center">
-  <div class="col-1">
-    <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
+  <div class="row mt-2 d-flex justify-content-end align-items-center">
+    <div class="col-1 d-flex justify-content-end">
+      <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
+    </div>
   </div>
 </div>
 
 <nz-modal [nzWidth]="500" [(nzVisible)]="isVisibleTask" [nzTitle]="titleTask" [nzContent]="contentTask"
-  [nzFooter]="footerTask" [nzAutofocus]="null"
-  (nzOnCancel)="closeTaskModal()">
+  [nzFooter]="footerTask" [nzAutofocus]="null" (nzOnCancel)="closeTaskModal()">
   <ng-template #titleTask>Thêm mới nhiệm vụ</ng-template>
   <ng-template #contentTask class="p-2">
     <div class="row mt-1">
@@ -49,8 +50,8 @@
       </form>
     </div>
   </ng-template>
-    <ng-template #footerTask class="d-flex justify-content-between align-items-center text-center">
-      <button class="btn btn-danger" (click)="closeTaskModal()">Hủy</button>
-      <button class="btn btn-primary ml-2" (click)="submitCreateTask()">Lưu</button>
-    </ng-template>
+  <ng-template #footerTask class="d-flex justify-content-between align-items-center text-center">
+    <button class="btn btn-danger" (click)="closeTaskModal()">Hủy</button>
+    <button class="btn btn-primary ml-2" (click)="submitCreateTask()">Lưu</button>
+  </ng-template>
 </nz-modal>

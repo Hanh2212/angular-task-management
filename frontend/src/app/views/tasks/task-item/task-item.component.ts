@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Tasks } from 'src/app/model/task.model';
@@ -9,21 +9,32 @@ import { TaskService } from 'src/app/services/task.service';
   templateUrl: './task-item.component.html',
   styleUrls: ['./task-item.component.scss']
 })
-export class TaskItemComponent implements OnInit {
+export class TaskItemComponent implements OnInit, OnChanges {
   @Input() tasks!: Tasks[];
   taskForm!: FormGroup;
   isVisibleTask = false;
   isEdit = false;
+  isLoading = true;
 
   constructor(private fb: FormBuilder,
               private modalService: NzModalService,
               private taskService: TaskService,) { }
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tasks']) {
+      console.log(changes['tasks']);
+    }
+  }
 
   ngOnInit(): void {
     this.taskForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', Validators.required],
     });
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000)
   }
 
   openCreateTaskModal(): void {
