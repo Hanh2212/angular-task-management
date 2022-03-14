@@ -6,20 +6,25 @@
             Danh sách
           </h1>
 
-          <div class="list-menu">
+          <app-loading-content *ngIf="isLoading"></app-loading-content>
+          <div class="list-menu" *ngIf="!isLoading">
             <a class="list-menu-item" *ngFor="let list of lists" (click)="showTasks(list._id)" routerLinkActive="is-active">
               <p>{{ list.title }}</p>
             </a>
 
           </div>
 
-          <button class="button is-primary has-text-white" style="margin-right: .75em;" (click)="openCreateModal()"> + Thêm
-            mới </button>
+          <div class="row">
+            <div class="col-12 w-100 d-flex justify-content-center align-items-center">
+              <button class="button is-primary has-text-white" style="margin-right: .75em;" (click)="openCreateModal()"> + Thêm
+                mới </button>
+            </div>
+          </div>
 
         </div>
         <div class="row task-list-container has-background-light">
           <div class="col-12">
-            <div *ngIf="tasks">
+            <div *ngIf="tasks" class="ml-2">
               <div class="top-bar">
                 <h1 class="title has-text-primary">
                   Nhiệm vụ
@@ -44,26 +49,6 @@
                   </div> -->
                 </div>
               </div>
-
-              <!-- Task Elements -->
-              <!-- <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
-                <div class="task-text d-flex flex-column">
-                  <p>{{ task.title }}</p>
-                  <small class="text-secondary">{{ task.description }}</small>
-                </div>
-                <div class="task-buttons">
-                  <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
-                  <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
-                </div>
-              </div>
-
-              <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the add button to create
-                a new task.</h3>
-              <div class="row mt-2 d-flex justify-content-end align-items-center">
-                <div class="col-1">
-                  <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
-                </div>
-              </div> -->
               <app-task-item [tasks]="tasks"></app-task-item>
             </div>
 
