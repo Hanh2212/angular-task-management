@@ -18,10 +18,10 @@ export class TasksComponent implements OnInit {
   isVisible = false;
   isVisibleTask = false;
   isEdit = false;
+  isLoading = true;
   titleModal = '';
 
   listForm!: FormGroup;
-  // taskForm!: FormGroup;
 
   constructor(private taskService: TaskService,
               private modalService: NzModalService,
@@ -31,10 +31,6 @@ export class TasksComponent implements OnInit {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
-    // this.taskForm = this.fb.group({
-    //   name: ['', [Validators.required, Validators.minLength(5)]],
-    //   description: ['', Validators.required],
-    // });
 
     this.lists = [
       {_id: '1', title: 'List 1'},
@@ -61,6 +57,9 @@ export class TasksComponent implements OnInit {
       {_id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true'},
       {_id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true'},
     ];
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000)
   }
 
   openCreateModal(): void {

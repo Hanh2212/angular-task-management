@@ -48,6 +48,7 @@
 }
 
 .sidebar {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 250px;
@@ -58,6 +59,9 @@
     border-bottom-left-radius: 8px;
 
     button {
+      position: absolute;
+      bottom: 1em;
+      max-width: 150px;
       background: $btn-primary;
       color: $white;
       border-radius: 5px;

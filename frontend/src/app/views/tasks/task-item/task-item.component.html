@@ -1,5 +1,5 @@
 <app-loading-content *ngIf="isLoading"></app-loading-content>
-<div *ngIf="!isLoading" class="row">
+<div *ngIf="!isLoading" class="row" style="margin-left: .25em;">
   <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
     <div class="task-text d-flex flex-column">
       <p>{{ task.title }}</p>
