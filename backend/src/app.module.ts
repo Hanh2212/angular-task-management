@@ -8,16 +8,17 @@ import { AuthModule } from './auth/auth.module';
 import { ListModule } from './list/list.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb+srv://hanhdh:Hanh1997@tasks.7upq6.mongodb.net/test?retryWrites=true&w=majority'),
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://hanhdh:Hanh1997@tasks.7upq6.mongodb.net/test?retryWrites=true&w=majority',
+    ),
     AuthModule,
-  ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '../..', 'frontend/dist/frontend'),
-    serveStaticOptions: {
-      index: true
-    }
-  }),
-  ListModule],
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'frontend/dist/frontend'),
+    }),
+    ListModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
