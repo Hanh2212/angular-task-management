@@ -3,13 +3,13 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthCredentialDto } from './dto/auth.credential.dto';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './user.entity';
 import { Model } from 'mongoose';
+import { User, UserDocument } from './user.schema';
 
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectModel('User') private userModel: Model<User>,
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
         private jwtService: JwtService
     ) {}
 
@@ -37,7 +37,7 @@ export class AuthService {
             const accessToken = await this.jwtService.sign(payload);
             return { accessToken };
         } else {
-            throw new UnauthorizedException('Tên đăng nhập hoặc mật khẩu không chính xác!');
+            throw new UnauthorizedException('Tên đăng nhập không tồn tại!');
         }
     }
     
