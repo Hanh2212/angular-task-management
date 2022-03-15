@@ -2,51 +2,66 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ListTask } from './list.schema';
 import { Model } from 'mongoose';
+import { Task } from './task.schema';
 
 @Injectable()
 export class ListService {
-    private lists: ListTask[];
+  private lists: ListTask[];
 
-    constructor(
-        @InjectModel(ListTask.name) private readonly listModel: Model<ListTask>
-    ) {}
+  constructor(
+    @InjectModel(ListTask.name) private readonly listModel: Model<ListTask>,
+    @InjectModel(Task.name) private readonly taskModel: Model<Task>,
+  ) {}
 
-    async addList(title: string): Promise<{message: string}> {
-        const newList = new this.listModel({
-            title: title
-        });
-        const result = await newList.save();
-        return {message: 'Thêm mới danh sách thành công!'}
-    }
+  async getLists(): Promise<ListTask[]> {
+    this.lists = await this.listModel.find().exec();
+    return [...this.lists];
+  }
 
-    getLists() {
-        return [...this.lists];
-    }
+  //Find tasks belong a specific list
+  async getTasks(id: string): Promise<any> {
+    return await this.taskModel.find({ id: id }).exec();
+  }
 
-    getDetailList(listId: string) {
-        const list = this.findList(listId)[0];
-        return {...list};
-    }
+  async addTask(id: string, title: string): Promise<{ message: string }> {
+    const newTask = new this.taskModel({
+      _listId: id,
+      title: title,
+    });
+    await newTask.save();
+    return { message: 'Thêm mới nhiệm vụ thành công!' };
+  }
 
-    updateList(listId: string, title: string) {
-        const [list, index] = this.findList(listId);
-        const updatedList = {...list};
-        if (title) {
-            updatedList.title = title;
-        }
-    }
+  async updateTask(id: string, taskId: string, title: string): Promise<any> {
+    return await this.taskModel
+      .findByIdAndUpdate(
+        { _id: taskId, _listId: id, title: title},
+      )
+      .exec();
+  }
 
-    deleteList(listId: string) {
-        const idx = this.listModel.findById(listId)[1];
-        this.lists.splice(idx, 1);
-    }
+  async addList(list: ListTask): Promise<{ message: string }> {
+    const newList = new this.listModel({
+      ...list,
+    });
+    await newList.save();
+    return { message: 'Thêm mới danh sách thành công!' };
+  }
 
-    findList(id: string): [ListTask, number] {
-        const listIndex = this.lists.findIndex(list => list.id === id);
-        const list = this.lists[listIndex];
-        if (!list) {
-            throw new NotFoundException('Không tìm thấy danh sách');
-        }
-        return [list, listIndex];
-    }
+  async getDetailList(listId: string): Promise<ListTask> {
+    const list = await this.listModel.findById(listId);
+    return { ...list };
+  }
+
+  async updateList(listId: string, updateList: ListTask): Promise<ListTask> {
+    return await this.listModel.findByIdAndUpdate(listId, updateList).exec();
+  }
+
+  async deleteList(listId: string): Promise<ListTask> {
+    return await this.listModel.findByIdAndDelete(listId).exec();
+  }
+
+  async deleteTask(id: string, taskId: string): Promise<Task> {
+    return await this.taskModel.findByIdAndDelete({_id: taskId, _listId: id}).exec();
+  }
 }

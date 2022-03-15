@@ -4,10 +4,7 @@ export type ListDocument = ListTask & Document;
 
 @Schema()
 export class ListTask {
-    @Prop()
-    id: string;
-
-    @Prop({required: true})
+    @Prop({required: true, minLength: 4, trim: true})
     title: string;
 }
 
