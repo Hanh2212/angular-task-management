@@ -4,13 +4,18 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [MongooseModule.forRoot('mongodb+srv://hanhdh:Hanh1997@tasks.7upq6.mongodb.net/test?retryWrites=true&w=majority'),
-            ServeStaticModule.forRoot({
-              rootPath: join(__dirname, '../..', 'frontend/dist/frontend')
-            })],
+    AuthModule,
+  ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '../..', 'frontend/dist/frontend'),
+    serveStaticOptions: {
+      index: true
+    }
+  })],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
