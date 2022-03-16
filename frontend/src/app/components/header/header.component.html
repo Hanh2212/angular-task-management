@@ -8,7 +8,8 @@
         <i nz-icon nzType="down"></i>
       </a>
       <nz-dropdown-menu #menu="nzDropdownMenu">
-        <ul nz-menu class="d-flex justify-content-between align-items-center">
+        <ul nz-menu class="d-flex flex-column justify-content-between align-items-center">
+          <li nz-menu-item class="text-primary"> Xin chào, {{authName}}</li>
           <li nz-menu-item class="text-danger" (click)="logOut()">Đăng xuất</li>
         </ul>
       </nz-dropdown-menu>

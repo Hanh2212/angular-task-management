@@ -4,7 +4,6 @@ export interface LoginPayload {
 }
 
 export class UserDetail {
-  id?: string;
   username?: string;
   accessToken?: string;
 }

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -7,10 +7,14 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  authName?: string;
 
   constructor(private authService: AuthenticationService) { }
 
   ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authName = this.authService.credentials?.username;
+    }
   }
 
   logOut(): void {

@@ -29,13 +29,14 @@ export class AuthService {
         }
     }
 
-    async signIn(credentialDto: AuthCredentialDto): Promise<{accessToken: string}> {
+    async signIn(credentialDto: AuthCredentialDto): Promise<{message: string, username: string, accessToken: string}> {
         const { username, password } = credentialDto;
         const user = await this.userModel.findOne({username});
         if (user && (await bcrypt.compare(password, user.password))) {
             const payload = { username };
             const accessToken = await this.jwtService.sign(payload);
-            return { accessToken };
+            const message = 'Đăng nhập thành công!';
+            return { message, username, accessToken };
         } else {
             throw new UnauthorizedException('Tên đăng nhập không tồn tại!');
         }
