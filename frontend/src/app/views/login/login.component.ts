@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { Toast } from 'src/app/core/helper/toastr';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   signupForm!: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder) { }
+  constructor(private router: Router, private fb: FormBuilder,
+              private toast: Toast) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -27,6 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.toast.customToastr('success', 'Đăng nhập thành công');
     this.router.navigate(['/tasks']);
   }
 
