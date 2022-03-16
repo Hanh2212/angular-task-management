@@ -28,8 +28,12 @@ export class AuthenticationService {
     return this.credential;
   }
 
-  login(payload: LoginPayload): Observable<UserDetail> {
-    return this.httpClient.post<UserDetail>('/login', payload);
+  signUp(payload: LoginPayload): Observable<any> {
+    return this.httpClient.post<any>('/auth/signup', payload);
+  }
+
+  login(payload: LoginPayload): Observable<any> {
+    return this.httpClient.post<any>('/auth/login', payload);
   }
 
   logout() {

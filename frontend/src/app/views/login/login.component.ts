@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Toast } from 'src/app/core/helper/toastr';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   signupForm!: FormGroup;
 
   constructor(private router: Router, private fb: FormBuilder,
+              private authService: AuthenticationService,
               private toast: Toast) { }
 
   ngOnInit(): void {
@@ -30,12 +32,40 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.toast.customToastr('success', 'Đăng nhập thành công');
-    this.router.navigate(['/tasks']);
+    for (const key in this.loginForm.controls) {
+      this.loginForm.controls[key].markAsDirty();
+      this.loginForm.controls[key].updateValueAndValidity();
+    }
+    if (this.loginForm.invalid) {return;}
+
+    this.authService.login(this.loginForm.value).subscribe((data) => {
+      if (data) {
+        this.authService.setCredentials(data);
+        this.toast.customToastr('success', data.message);
+        this.router.navigate(['/tasks']);
+      }
+    }, error => {
+      this.toast.customToastr('error', error.message);
+      this.loginForm.reset();
+    });
   }
 
   signUp(): void {
-    console.log(this.signupForm.value);
+    for (const key in this.signupForm.controls) {
+      this.signupForm.controls[key].markAsDirty();
+      this.signupForm.controls[key].updateValueAndValidity();
+    }
+    if (this.signupForm.invalid) {return;}
+
+    this.authService.signUp(this.signupForm.value).subscribe((data) => {
+      if (data) {
+        this.toast.customToastr('success', data.message);
+        // this.router.navigate(['/tasks']);
+      }
+    }, error => {
+      this.toast.customToastr('error', error.message);
+      this.signupForm.reset();
+    });
   }
 
 }
