@@ -23,6 +23,10 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tasks']) {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000)
       console.log(changes['tasks']);
     }
   }
@@ -34,7 +38,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
     });
     setTimeout(() => {
       this.isLoading = false;
-    }, 2000)
+    }, 1000)
   }
 
   openCreateTaskModal(): void {

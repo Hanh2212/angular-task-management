@@ -19,8 +19,9 @@ export class ListService {
   }
 
   //Find tasks belong a specific list
-  async getTasks(id: string): Promise<any> {
-    return await this.taskModel.find({ id: id }).exec();
+  async getTasks(id: string): Promise<Task[]> {
+    const tasks = await this.taskModel.find({ _listId: id });
+    return [...tasks] 
   }
 
   async addTask(id: string, title: string): Promise<{ message: string }> {
@@ -35,14 +36,14 @@ export class ListService {
   async updateTask(id: string, taskId: string, title: string): Promise<any> {
     return await this.taskModel
       .findByIdAndUpdate(
-        { _id: taskId, _listId: id, title: title},
+        { _id: taskId, _listId: id}, {_id: taskId, _listId: id, title: title}
       )
       .exec();
   }
 
-  async addList(list: ListTask): Promise<{ message: string }> {
+  async addList(title: string): Promise<{ message: string }> {
     const newList = new this.listModel({
-      ...list,
+      title: title
     });
     await newList.save();
     return { message: 'Thêm mới danh sách thành công!' };
@@ -53,8 +54,8 @@ export class ListService {
     return { ...list };
   }
 
-  async updateList(listId: string, updateList: ListTask): Promise<ListTask> {
-    return await this.listModel.findByIdAndUpdate(listId, updateList).exec();
+  async updateList(id: string, updateList: ListTask): Promise<ListTask> {
+    return await this.listModel.findByIdAndUpdate(id, updateList).exec();
   }
 
   async deleteList(listId: string): Promise<ListTask> {

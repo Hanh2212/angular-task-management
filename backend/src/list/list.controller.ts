@@ -14,7 +14,7 @@ export class ListController {
 
     //Return all tasks that belong a specific list
     @Get('/:id/tasks')
-    async getListTasks(@Param('id') id: string) {
+    getListTasks(@Param('id') id: string) {
         return this.listService.getTasks(id);
     }
 
@@ -30,8 +30,8 @@ export class ListController {
     }
 
     @Post()
-    async addList(@Body('list') list: ListTask): Promise<{message: string}> {
-        return this.listService.addList(list);
+    addList(@Body('title') title: string): Promise<{message: string}> {
+        return this.listService.addList(title);
     }
 
     @Get(':id')
