@@ -1,7 +1,6 @@
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -16,6 +15,8 @@ import { ErrorInterceptor } from './core/helper/error.interceptor';
 import { ApiPrefixInterceptor } from './core/helper/api-prefix.interceptor';
 import { HeaderComponent } from './components/header/header.component';
 import { ContentLoaderModule } from '@ngneat/content-loader';
+import { HotToastModule } from '@ngneat/hot-toast';
+import { Toast } from './core/helper/toastr';
 
 registerLocaleData(en);
 
@@ -31,13 +32,19 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NzDropDownModule,
-    ContentLoaderModule
+    ContentLoaderModule,
+    HotToastModule.forRoot(
+      {
+        position: 'top-right',
+      }
+    )
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApiPrefixInterceptor, multi: true },
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    Toast
   ],
   bootstrap: [AppComponent]
 })
