@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListTaskService {
   headerOptions = {};
+
+  listIdSub = new BehaviorSubject('');
+  $listIdData = this.listIdSub.asObservable();
 
   constructor(private httpClient: HttpClient) {
     this.headerOptions = {
@@ -23,11 +26,11 @@ export class ListTaskService {
   }
 
   getTasksByList(id: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks';
+    const url = `/lists?id=${id}` + '/tasks';
     return this.httpClient.get(url, this.headerOptions);
   }
 
-  createList(body: string): Observable<any> {
+  createList(body: any): Observable<any> {
     const url = '/lists';
     return this.httpClient.post(url, body, this.headerOptions)
   }

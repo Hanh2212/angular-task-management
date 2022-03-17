@@ -15,6 +15,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   isVisibleTask = false;
   isEdit = false;
   isLoading = true;
+  listId = '';
 
   constructor(private fb: FormBuilder,
               private modalService: NzModalService,
@@ -27,7 +28,6 @@ export class TaskItemComponent implements OnInit, OnChanges {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000)
-      console.log(changes['tasks']);
     }
   }
 
@@ -39,6 +39,14 @@ export class TaskItemComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.isLoading = false;
     }, 1000)
+    this.getTasks();
+  }
+
+  getTasks(): void {
+    this.listService.$listIdData.subscribe({
+      next: (data) => console.log(data),
+      error: (err) => console.log(err)
+    });
   }
 
   openCreateTaskModal(): void {

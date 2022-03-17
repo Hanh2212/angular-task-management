@@ -7,12 +7,12 @@
           </h1>
 
           <app-loading-content *ngIf="isLoading"></app-loading-content>
-          <div class="list-menu" *ngIf="!isLoading">
+          <div class="list-menu" *ngIf="!isLoading && lists.length > 0;">
             <a class="list-menu-item" *ngFor="let list of lists" (click)="showTasks(list._id)" routerLinkActive="is-active">
               <p>{{ list.title }}</p>
             </a>
-
           </div>
+          <p *ngIf="!isLoading && lists.length === 0" class="text-justify">Không có danh sách nào!</p>
 
           <div class="row">
             <div class="col-12 w-100 d-flex justify-content-center align-items-center">

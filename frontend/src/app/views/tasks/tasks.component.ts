@@ -1,3 +1,4 @@
+import { Toast } from 'src/app/core/helper/toastr';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Lists } from 'src/app/model/list.model';
 import { Tasks } from 'src/app/model/task.model';
@@ -27,20 +28,13 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   constructor(private listService: ListTaskService,
     private modalService: NzModalService,
+    private toast: Toast,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
-
-    this.lists = [
-      { _id: '1', title: 'List 1' },
-      { _id: '2', title: 'List 2' },
-      { _id: '3', title: 'List 3' },
-      { _id: '4', title: 'List 4' },
-      { _id: '5', title: 'List 5' },
-    ];
 
     this.tasks = [
       { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
@@ -59,6 +53,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       { _id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true' },
       { _id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true' },
     ];
+    this.getLists();
   }
 
   getLists(): void {
@@ -66,7 +61,7 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.subscription = this.listService.getLists().pipe(delay(1000))
       .subscribe({
         next: (data) => {
-          console.log(data);
+          this.lists = data.body.length > 0 ? data.body : null;
           this.isLoading = false;
         },
         error: (error) => {
@@ -83,10 +78,17 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   showTasks(id: string): void {
     console.log(id);
-    this.tasks = [...this.tasks2];
+    if (id !== '') {
+      this.listService.listIdSub.next(id);
+      this.listService.getTasksByList(id).subscribe({
+        next: (data) => console.log(data),
+        error: (err) => console.log(err)
+      });
+    }
   }
 
   submitCreateList(): void {
+    this.isLoading = true;
     for (const key in this.listForm.controls) {
       this.listForm.controls[key].markAsDirty();
       this.listForm.controls[key].updateValueAndValidity();
@@ -94,6 +96,16 @@ export class TasksComponent implements OnInit, OnDestroy {
     if (this.listForm.invalid) {
       return;
     }
+    this.listService.createList(this.listForm.value).subscribe(data => {
+      this.toast.customToastr('success', data.body.message);
+      this.closeModal();
+      this.getLists();
+      this.isLoading = false;
+    }, err => {
+      this.isLoading = false;
+      this.closeModal();
+      console.log(err);
+    });
   }
 
   closeModal(): void {
