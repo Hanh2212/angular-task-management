@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Tasks } from 'src/app/model/task.model';
-import { TaskService } from 'src/app/services/task.service';
+import { ListTaskService } from 'src/app/services/list-task.service';
 
 @Component({
   selector: 'app-task-item',
@@ -18,7 +18,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   constructor(private fb: FormBuilder,
               private modalService: NzModalService,
-              private taskService: TaskService,) { }
+              private listService: ListTaskService,) { }
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,17 +86,18 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   onTaskClick(task: Tasks) {
     // we want to set the task to completed
-    this.taskService.complete(task).subscribe(() => {
-      // the task has been set to completed successfully
-      console.log("Completed successully!");
-      // task.completed = !task?.completed;
-    })
+    // this.listService.complete(task).subscribe(() => {
+    //   // the task has been set to completed successfully
+    //   console.log("Completed successully!");
+    //   // task.completed = !task?.completed;
+    // })
   }
 
-  onDeleteTaskClick(id: string) {
-    this.taskService.deleteTask(id).subscribe((res: any) => {
-      this.tasks = this.tasks.filter(val => val._id !== id);
-      console.log(res);
+  onDeleteTaskClick(id: string, taskId: string) {
+    this.listService.deleteTask(id, taskId).subscribe(data => {
+      console.log(data);
+    }, error => {
+      console.log(error);
     })
   }
 //

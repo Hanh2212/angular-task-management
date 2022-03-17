@@ -1,15 +1,16 @@
-import { TaskService } from './../../services/task.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Lists } from 'src/app/model/list.model';
 import { Tasks } from 'src/app/model/task.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { delay, Subscription } from 'rxjs';
+import { ListTaskService } from 'src/app/services/list-task.service';
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss']
 })
-export class TasksComponent implements OnInit {
+export class TasksComponent implements OnInit, OnDestroy {
   lists!: Lists[];
   tasks!: Tasks[];
   tasks2!: Tasks[];
@@ -22,8 +23,9 @@ export class TasksComponent implements OnInit {
   titleModal = '';
 
   listForm!: FormGroup;
+  subscription!: Subscription;
 
-  constructor(private taskService: TaskService,
+  constructor(private listService: ListTaskService,
               private modalService: NzModalService,
               private fb: FormBuilder) { }
 
@@ -57,32 +59,23 @@ export class TasksComponent implements OnInit {
       {_id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true'},
       {_id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true'},
     ];
-    setTimeout(() => {
+  }
+
+  getLists(): void {
+    this.isLoading = true;
+    this.subscription = this.listService.getLists().pipe(delay(1000)).subscribe(data => {
+      console.log(data);
       this.isLoading = false;
-    }, 2000)
+    }, error => {
+      this.isLoading = false;
+      console.log(error);
+    });
   }
 
   openCreateModal(): void {
     this.isVisible = true;
     this.listForm.reset();
   }
-
-  // openCreateTaskModal(): void {
-  //   this.isEdit = false;
-  //   this.isVisibleTask = true;
-  //   this.taskForm.reset();
-  // }
-
-  // openEditTaskModal(task: Tasks): void {
-  //   this.isVisibleTask = true;
-  //   this.isEdit = true;
-  //   this.taskForm.reset();
-  //   this.taskForm.patchValue({
-  //     id: task._id,
-  //     name: task.title,
-  //     description: task.description
-  //   })
-  // }
 
   showTasks(id: string): void {
     console.log(id);
@@ -99,55 +92,18 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  // submitCreateTask(): void {
-  //   for (const key in this.taskForm.controls) {
-  //     this.taskForm.controls[key].markAsDirty();
-  //     this.taskForm.controls[key].updateValueAndValidity();
-  //   }
-  //   if (this.taskForm.invalid) {
-  //     return;
-  //   }
-  //   console.log('ahihi');
-  //   this.closeTaskModal();
-  // }
-
   closeModal(): void {
     this.isVisible = false;
   }
 
-  closeTaskModal(): void {
-    this.isVisibleTask = false;
-  }
-
-  showConfirm(): void {
-    this.modalService.confirm({
-      nzTitle: 'Xóa nhiệm vụ',
-      nzContent: 'Bạn có chắc muốn xóa nhiệm vụ này ?',
-      nzOkText: 'Xác nhận',
-      nzCancelText: 'Hủy'
-    });
-  }
-
-  // onTaskClick(task: Tasks) {
-  //   // we want to set the task to completed
-  //   this.taskService.complete(task).subscribe(() => {
-  //     // the task has been set to completed successfully
-  //     console.log("Completed successully!");
-  //     // task.completed = !task?.completed;
-  //   })
-  // }
-
   onDeleteListClick() {
-    this.taskService.deleteList(this.selectedListId).subscribe((res: any) => {
+    this.listService.deleteList(this.selectedListId).subscribe((res: any) => {
       console.log(res);
     })
   }
 
-  // onDeleteTaskClick(id: string) {
-  //   this.taskService.deleteTask(id).subscribe((res: any) => {
-  //     this.tasks = this.tasks.filter(val => val._id !== id);
-  //     console.log(res);
-  //   })
-  // }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
 }
