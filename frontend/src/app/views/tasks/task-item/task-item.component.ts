@@ -94,11 +94,11 @@ export class TaskItemComponent implements OnInit, OnChanges {
   }
 
   onDeleteTaskClick(id: string, taskId: string) {
-    this.listService.deleteTask(id, taskId).subscribe(data => {
-      console.log(data);
-    }, error => {
-      console.log(error);
-    })
+    this.listService.deleteTask(id, taskId)
+      .subscribe({
+        next: (data) => console.log(data),
+        error: (err) => console.log(err)
+      });
   }
 //
 }

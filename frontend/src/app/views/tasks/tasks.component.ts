@@ -26,8 +26,8 @@ export class TasksComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   constructor(private listService: ListTaskService,
-              private modalService: NzModalService,
-              private fb: FormBuilder) { }
+    private modalService: NzModalService,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.listForm = this.fb.group({
@@ -35,41 +35,45 @@ export class TasksComponent implements OnInit, OnDestroy {
     });
 
     this.lists = [
-      {_id: '1', title: 'List 1'},
-      {_id: '2', title: 'List 2'},
-      {_id: '3', title: 'List 3'},
-      {_id: '4', title: 'List 4'},
-      {_id: '5', title: 'List 5'},
+      { _id: '1', title: 'List 1' },
+      { _id: '2', title: 'List 2' },
+      { _id: '3', title: 'List 3' },
+      { _id: '4', title: 'List 4' },
+      { _id: '5', title: 'List 5' },
     ];
 
     this.tasks = [
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
-      {_id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false'},
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
+      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
     ];
 
     this.tasks2 = [
-      {_id: '1', _listId: 'List 1', title: 'Task 2', description: 'Description 2', completed: 'true'},
-      {_id: '2', _listId: 'List 2', title: 'Task 2', description: 'Description 2', completed: 'true'},
-      {_id: '3', _listId: 'List 3', title: 'Task 2', description: 'Description 2', completed: 'true'},
-      {_id: '4', _listId: 'List 4', title: 'Task 2', description: 'Description 2', completed: 'true'},
-      {_id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true'},
-      {_id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true'},
+      { _id: '1', _listId: 'List 1', title: 'Task 2', description: 'Description 2', completed: 'true' },
+      { _id: '2', _listId: 'List 2', title: 'Task 2', description: 'Description 2', completed: 'true' },
+      { _id: '3', _listId: 'List 3', title: 'Task 2', description: 'Description 2', completed: 'true' },
+      { _id: '4', _listId: 'List 4', title: 'Task 2', description: 'Description 2', completed: 'true' },
+      { _id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true' },
+      { _id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true' },
     ];
   }
 
   getLists(): void {
     this.isLoading = true;
-    this.subscription = this.listService.getLists().pipe(delay(1000)).subscribe(data => {
-      console.log(data);
-      this.isLoading = false;
-    }, error => {
-      this.isLoading = false;
-      console.log(error);
-    });
+    this.subscription = this.listService.getLists().pipe(delay(1000))
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.log(error);
+        }
+      });
   }
 
   openCreateModal(): void {
@@ -97,9 +101,11 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   onDeleteListClick() {
-    this.listService.deleteList(this.selectedListId).subscribe((res: any) => {
-      console.log(res);
-    })
+    this.listService.deleteList(this.selectedListId)
+      .subscribe({
+        next: (data) => console.log(data),
+        error: (err) => console.log(err)
+      });
   }
 
   ngOnDestroy(): void {

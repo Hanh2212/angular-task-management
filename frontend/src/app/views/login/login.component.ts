@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   signupForm!: FormGroup;
 
   constructor(private router: Router, private fb: FormBuilder,
-              private authService: AuthenticationService,
-              private toast: Toast) { }
+    private authService: AuthenticationService,
+    private toast: Toast) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -36,18 +36,22 @@ export class LoginComponent implements OnInit {
       this.loginForm.controls[key].markAsDirty();
       this.loginForm.controls[key].updateValueAndValidity();
     }
-    if (this.loginForm.invalid) {return;}
+    if (this.loginForm.invalid) { return; }
 
-    this.authService.login(this.loginForm.value).subscribe((data) => {
-      if (data) {
-        this.authService.setCredentials(data);
-        this.toast.customToastr('success', data.message);
-        this.router.navigate(['/tasks']);
-      }
-    }, error => {
-      this.toast.customToastr('error', error.message);
-      this.loginForm.reset();
-    });
+    this.authService.login(this.loginForm.value)
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            this.authService.setCredentials(data);
+            this.toast.customToastr('success', data.message);
+            this.router.navigate(['/tasks']);
+          }
+        },
+        error: error => {
+          this.toast.customToastr('error', error.message);
+          this.loginForm.reset();
+        }
+      })
   }
 
   signUp(): void {
@@ -55,17 +59,19 @@ export class LoginComponent implements OnInit {
       this.signupForm.controls[key].markAsDirty();
       this.signupForm.controls[key].updateValueAndValidity();
     }
-    if (this.signupForm.invalid) {return;}
+    if (this.signupForm.invalid) { return; }
 
-    this.authService.signUp(this.signupForm.value).subscribe((data) => {
-      if (data) {
-        this.toast.customToastr('success', data.message);
-        // this.router.navigate(['/tasks']);
-      }
-    }, error => {
-      this.toast.customToastr('error', error.message);
-      this.signupForm.reset();
-    });
+    this.authService.signUp(this.signupForm.value)
+      .subscribe({
+        next: (data) => {
+          if (data) {
+            this.toast.customToastr('success', data.message);
+          }
+        }, error: (error) => {
+          this.toast.customToastr('error', error.message);
+          this.signupForm.reset();
+        }
+      });
   }
 
 }
