@@ -36,15 +36,6 @@ export class TasksComponent implements OnInit, OnDestroy {
       title: ['', Validators.required]
     });
 
-    this.tasks = [
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-    ];
-
     this.tasks2 = [
       { _id: '1', _listId: 'List 1', title: 'Task 2', description: 'Description 2', completed: 'true' },
       { _id: '2', _listId: 'List 2', title: 'Task 2', description: 'Description 2', completed: 'true' },
@@ -80,8 +71,8 @@ export class TasksComponent implements OnInit, OnDestroy {
     console.log(id);
     if (id !== '') {
       this.listService.listIdSub.next(id);
-      this.listService.getTasksByList(id).subscribe({
-        next: (data) => console.log(data),
+      this.listService.getTasks({id: id}).subscribe({
+        next: (data) => this.tasks = data.body.length > 0 ? data.body : null,
         error: (err) => console.log(err)
       });
     }

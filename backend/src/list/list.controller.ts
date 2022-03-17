@@ -12,15 +12,15 @@ export class ListController {
         return this.listService.getLists();
     }
 
-    //Return all tasks that belong a specific list
-    @Get('/:id/tasks')
-    getListTasks(@Param('id') id: string) {
-        return this.listService.getTasks(id);
+    //fix lấy ds task
+    @Post('/tasks')
+    getTasks(@Body() body: {id: string}) {
+        return this.listService.getTasks(body);
     }
 
-    @Post('/:id/tasks')
-    async addTask(@Param('id') id: string, @Body('title') title: string): Promise<{message: string}> {
-        return this.listService.addTask(id, title);
+    @Post('/tasks/create')
+    async addTask(@Body() body: {_listId: string, title: string, description: string}): Promise<{message: string}> {
+        return this.listService.addTask(body);
     }
 
     @Patch('/:id/tasks/:taskId')
@@ -51,9 +51,9 @@ export class ListController {
         return {message: 'Xóa danh sách thành công!'};
     }
 
-    @Delete(':id/tasks/:taskId')
-    deleteTask(@Param('id') id: string, @Param('taskId') taskId: string) {
-        this.listService.deleteTask(id, taskId);
+    @Delete('/tasks/delete')
+    deleteTask(@Body() body: {_listId: string, _id: string}) {
+        this.listService.deleteTask(body);
         return {message: 'Xóa nhiệm vụ thành công!'};
     }
 }

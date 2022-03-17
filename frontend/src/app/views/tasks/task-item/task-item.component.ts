@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { Toast } from 'src/app/core/helper/toastr';
 import { Tasks } from 'src/app/model/task.model';
 import { ListTaskService } from 'src/app/services/list-task.service';
 
@@ -18,6 +19,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   listId = '';
 
   constructor(private fb: FormBuilder,
+              private toast: Toast,
               private modalService: NzModalService,
               private listService: ListTaskService,) { }
 
@@ -33,7 +35,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.taskForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
+      title: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', Validators.required],
     });
     setTimeout(() => {
@@ -44,7 +46,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   getTasks(): void {
     this.listService.$listIdData.subscribe({
-      next: (data) => console.log(data),
+      next: (data) => this.listId = data,
       error: (err) => console.log(err)
     });
   }
@@ -61,7 +63,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
     this.taskForm.reset();
     this.taskForm.patchValue({
       id: task._id,
-      name: task.title,
+      title: task.title,
       description: task.description
     })
   }
@@ -77,6 +79,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   }
 
   submitCreateTask(): void {
+    this.isLoading = true;
     for (const key in this.taskForm.controls) {
       this.taskForm.controls[key].markAsDirty();
       this.taskForm.controls[key].updateValueAndValidity();
@@ -84,8 +87,20 @@ export class TaskItemComponent implements OnInit, OnChanges {
     if (this.taskForm.invalid) {
       return;
     }
-    console.log('ahihi');
-    this.closeTaskModal();
+
+    const body = {_listId: this.listId, title: this.taskForm.value.title, description: this.taskForm.value.desctiption};
+    this.listService.createTask(body).subscribe({
+      next: (data) => {
+        this.toast.customToastr('success', data.message);
+        this.closeTaskModal();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.toast.customToastr('error', err);
+      }
+    });
+
   }
 
   closeTaskModal(): void {

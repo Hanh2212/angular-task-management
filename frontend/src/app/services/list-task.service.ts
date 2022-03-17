@@ -30,14 +30,19 @@ export class ListTaskService {
     return this.httpClient.get(url, this.headerOptions);
   }
 
+  getTasks(body: any): Observable<any> {
+    const url = '/lists/tasks'
+    return this.httpClient.post(url, body, this.headerOptions);
+  }
+
   createList(body: any): Observable<any> {
     const url = '/lists';
     return this.httpClient.post(url, body, this.headerOptions)
   }
 
-  createTask(id: string, title: string, description: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks';
-    return this.httpClient.post(url, title, this.headerOptions);
+  createTask(body: {_listId: string, title: string, description: string}): Observable<any> {
+    const url = '/lists/tasks/create';
+    return this.httpClient.post(url, body, this.headerOptions);
   }
 
   updateTask(id: string, taskId: string): Observable<any> {
@@ -45,9 +50,9 @@ export class ListTaskService {
     return this.httpClient.post(url, this.headerOptions);
   }
 
-  deleteTask(id: string, taskId: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks?taskId=' + taskId;
-    return this.httpClient.delete(url, this.headerOptions);
+  deleteTask(body: {_listId: string, _id: string}): Observable<any> {
+    const url = '/lists/tasks';
+    return this.httpClient.delete(url);
   }
 
   deleteList(id: string): Observable<any> {

@@ -10,14 +10,13 @@
       <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
     </div>
   </div>
+</div>
+<h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
+</h3>
 
-  <h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
-  </h3>
-
-  <div class="row mt-2 d-flex justify-content-end align-items-center">
-    <div class="col-1 d-flex justify-content-end">
-      <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
-    </div>
+<div class="row mt-2 d-flex justify-content-end align-items-center">
+  <div class="col-1 d-flex justify-content-end">
+    <i class="ri-add-circle-line" (click)="openCreateTaskModal()"></i>
   </div>
 </div>
 
@@ -29,7 +28,7 @@
       <form [formGroup]="taskForm" class="m-0">
         <nz-form-item class="row pl-0 ml-0 text-left">
           <nz-form-control class="col-sm-12 col-md-12" [nzSpan]="12" nzHasFeedback [nzErrorTip]="nameErrorTpl">
-            <input nz-input formControlName="name" placeholder="Tên nhiệm vụ" />
+            <input nz-input formControlName="title" placeholder="Tên nhiệm vụ" />
             <ng-template #nameErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">
                 Tên nhiệm vụ bắt buộc nhập
