@@ -23,20 +23,21 @@ export class ListService {
         return [...tasks]
     }
 
-    async addTask(body: {_listId: string, title: string, description: string}): Promise<{ message: string }> {
+    async addTask(body: {_listId: string, title: string, status: string, description: string}): Promise<{ message: string }> {
         const newTask = new this.taskModel({
             _listId: body._listId,
             title: body.title,
+            status: body.status,
             description: body.description,
         });
         await newTask.save();
         return { message: 'Thêm mới nhiệm vụ thành công!' };
     }
 
-    async updateTask(body: {_listId: string, _id: string, title: string, description: string}): Promise<any> {
+    async updateTask(body: {_listId: string, _id: string, title: string, status: string, description: string}): Promise<any> {
         return await this.taskModel
             .findByIdAndUpdate(
-                { _listId: body._listId, _id: body._id}, {_listId: body._listId, _id: body._id, title: body.title, description: body.description}
+                { _listId: body._listId, _id: body._id}, {_listId: body._listId, _id: body._id, title: body.title, status: body.status, description: body.description}
             )
             .exec();
     }

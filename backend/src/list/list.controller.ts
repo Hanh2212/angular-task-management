@@ -19,12 +19,12 @@ export class ListController {
     }
 
     @Post('/tasks/create')
-    async addTask(@Body() body: { _listId: string, title: string, description: string }): Promise<{ message: string }> {
+    async addTask(@Body() body: { _listId: string, title: string, status: string, description: string }): Promise<{ message: string }> {
         return this.listService.addTask(body);
     }
 
     @Patch('/tasks/update')
-    async updateTask(@Body() body: { _listId: string, _id: string, title: string, description: string }) {
+    async updateTask(@Body() body: { _listId: string, _id: string, title: string, status: string, description: string }) {
         this.listService.updateTask(body);
         return { message: 'Cập nhật nhiệm vụ thành công!' };
     }

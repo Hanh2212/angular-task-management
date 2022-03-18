@@ -3,5 +3,5 @@ export class Tasks {
   _listId!: string;
   title!: string;
   description!: string;
-  completed!: string;
+  status!: string;
 }
