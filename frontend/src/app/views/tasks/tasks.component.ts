@@ -87,16 +87,17 @@ export class TasksComponent implements OnInit, OnDestroy {
     if (this.listForm.invalid) {
       return;
     }
-    this.listService.createList(this.listForm.value).subscribe(data => {
+    this.listService.createList(this.listForm.value)
+      .subscribe({next: data => {
       this.toast.customToastr('success', data.body.message);
       this.closeModal();
       this.getLists();
       this.isLoading = false;
-    }, err => {
+    }, error: err => {
       this.isLoading = false;
       this.closeModal();
       console.log(err);
-    });
+    }});
   }
 
   closeModal(): void {

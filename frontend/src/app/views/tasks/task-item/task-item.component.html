@@ -1,5 +1,5 @@
-<app-loading-content *ngIf="isLoading"></app-loading-content>
-<div *ngIf="!isLoading" class="row" style="margin-left: .25em;">
+<!-- <app-loading-content *ngIf="isLoading && listId !== ''  "></app-loading-content> -->
+<div class="row" style="margin-left: .25em;">
   <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
     <div class="task-text d-flex flex-column">
       <p>{{ task.title }}</p>
@@ -7,12 +7,12 @@
     </div>
     <div class="task-buttons">
       <i class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;" (click)="openEditTaskModal(task)"></i>
-      <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm()"></i>
+      <i class="ri-delete-bin-5-fill" style="color: #e63946;" (click)="showConfirm(task._id)"></i>
     </div>
   </div>
 </div>
-<h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
-</h3>
+<!-- <h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
+</h3> -->
 
 <div class="row mt-2 d-flex justify-content-end align-items-center">
   <div class="col-1 d-flex justify-content-end">

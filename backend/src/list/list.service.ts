@@ -33,10 +33,10 @@ export class ListService {
     return { message: 'Thêm mới nhiệm vụ thành công!' };
   }
 
-  async updateTask(id: string, taskId: string, title: string): Promise<any> {
+  async updateTask(body: {_listId: string, _id: string, title: string, description: string}): Promise<any> {
     return await this.taskModel
       .findByIdAndUpdate(
-        { _id: taskId, _listId: id}, {_id: taskId, _listId: id, title: title}
+        { _listId: body._listId, _id: body._id}, {_listId: body._listId, _id: body._id, title: body.title, description: body.description}
       )
       .exec();
   }
@@ -62,7 +62,7 @@ export class ListService {
     return await this.listModel.findByIdAndDelete(listId).exec();
   }
 
-  async deleteTask(body: {_listId: string, _id: string}): Promise<Task> {
-    return await this.taskModel.findByIdAndDelete({_listId: body._listId, _id: body._id}).exec();
+  async deleteTask(_id: string): Promise<Task> {
+    return await this.taskModel.findByIdAndDelete({_id: _id}).exec();
   }
 }
