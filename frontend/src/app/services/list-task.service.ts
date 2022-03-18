@@ -55,7 +55,7 @@ export class ListTaskService {
     return this.httpClient.post(url, body, this.headerOptions);
   }
 
-  deleteList(body: {id: string}): Observable<any> {
+  deleteList(body: {_id: string}): Observable<any> {
     const url = '/lists/delete';
     return this.httpClient.post(url, body, this.headerOptions)
   }

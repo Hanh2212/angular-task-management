@@ -59,11 +59,11 @@ export class ListService {
         return await this.listModel.findByIdAndUpdate(id, updateList).exec();
     }
 
-    async deleteList(listId: string): Promise<ListTask> {
-        return await this.listModel.findByIdAndDelete(listId).exec();
+    async deleteList(body: {_id: string}): Promise<ListTask> {
+        return await this.listModel.findByIdAndDelete({_id: body._id}).exec();
     }
 
-    async deleteTask(_id: string): Promise<Task> {
-        return await this.taskModel.findByIdAndDelete({_id: _id}).exec();
+    async deleteTask(body: {_listId: string, _id: string}): Promise<Task> {
+        return await this.taskModel.findByIdAndDelete({_listId: body._listId, _id: body._id}).exec();
     }
 }

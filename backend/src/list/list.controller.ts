@@ -45,15 +45,15 @@ export class ListController {
         return { message: 'Cập nhật danh sách thành công!' };
     }
 
-    @Delete(':id')
-    deleteList(@Param('id') id: string) {
-        this.listService.deleteList(id);
+    @Post('/delete')
+    deleteList(@Body() body: {_id: string}) {
+        this.listService.deleteList(body);
         return { message: 'Xóa danh sách thành công!' };
     }
 
-    @Delete('/tasks/delete')
-    deleteTask(@Param('_id') _id: string) {
-        this.listService.deleteTask(_id);
+    @Post('/tasks/delete')
+    deleteTask(@Body() body: {_listId: string, _id: string}) {
+        this.listService.deleteTask(body);
         return { message: 'Xóa nhiệm vụ thành công!' };
     }
 }

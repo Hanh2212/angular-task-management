@@ -104,7 +104,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       nzOkText: 'Xác nhận',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.listService.deleteList({id: _id})
+        this.listService.deleteList({_id: _id})
           .subscribe({
             next: (data) => {
               this.toast.customToastr('success', data.body.message);
