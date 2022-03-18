@@ -50,13 +50,13 @@ export class ListTaskService {
     return this.httpClient.patch(url, body, this.headerOptions);
   }
 
-  deleteTask(_id: string): Observable<any> {
-    const url = '/lists/tasks?_id=' + _id;
-    return this.httpClient.delete(url, this.headerOptions);
+  deleteTask(body: {_listId: string, _id: string}): Observable<any> {
+    const url = '/lists/tasks/delete';
+    return this.httpClient.post(url, body, this.headerOptions);
   }
 
-  deleteList(id: string): Observable<any> {
-    const url = '/lists?id=' + id;
-    return this.httpClient.delete(url, this.headerOptions)
+  deleteList(body: {id: string}): Observable<any> {
+    const url = '/lists/delete';
+    return this.httpClient.post(url, body, this.headerOptions)
   }
 }

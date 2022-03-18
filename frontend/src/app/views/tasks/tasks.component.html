@@ -1,86 +1,91 @@
 <div class="row centered-content">
   <div class="row d-flex">
     <div class="col-8 offset-2 task-manager-container">
-        <div class="sidebar has-background-white">
-          <h1 class="title has-text-primary">
-            Danh sách
-          </h1>
+      <div class="sidebar has-background-white">
+        <h1 class="title has-text-primary">
+          Danh sách
+        </h1>
 
-          <app-loading-content *ngIf="isLoading"></app-loading-content>
-          <div class="list-menu" *ngIf="!isLoading && lists.length > 0;">
-            <a class="list-menu-item" *ngFor="let list of lists" (click)="showTasks(list._id)" routerLinkActive="is-active">
-              <p>{{ list.title }}</p>
-            </a>
+        <app-loading-content *ngIf="isLoading"></app-loading-content>
+        <div *ngIf="!isLoading && lists.length > 0;" class="list-menu">
+          <div (click)="showTasks(list._id)" *ngFor="let list of lists"
+               class="list-menu-item d-flex justify-content-between align-items-center" routerLinkActive="is-active">
+            <span>{{ list.title }}</span> <i (click)="showConfirm(list._id)" class="ri-delete-bin-5-fill"
+                                             style="color: #e63946;"></i>
           </div>
-          <p *ngIf="!isLoading && lists.length === 0" class="text-justify">Không có danh sách nào!</p>
-
-          <div class="row">
-            <div class="col-12 w-100 d-flex justify-content-center align-items-center">
-              <button class="button is-primary has-text-white" style="margin-right: .75em;" (click)="openCreateModal()"> + Thêm
-                mới </button>
-            </div>
-          </div>
-
         </div>
-        <div class="row task-list-container has-background-light">
-          <div class="col-12">
-            <div class="ml-2">
-              <h1 class="title has-text-primary">
-                Nhiệm vụ
-              </h1>
-              <div *ngIf="tasks"  class="top-bar">
-                <div class="dropdown is-hoverable is-right">
-                  <!-- <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                      <span class="icon is-small">
-                        <i class="fas fa-cog" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                  </div> -->
-                  <!-- <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                    <div class="dropdown-content">
-                      <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
-                        Edit
-                      </a>
-                      <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger">
-                        Delete
-                      </a>
-                    </div>
-                  </div> -->
-                </div>
+        <p *ngIf="!isLoading && lists.length === 0" class="text-justify">Không có danh sách nào!</p>
+
+        <div class="row">
+          <div class="col-12 w-100 d-flex justify-content-center align-items-center">
+            <button (click)="openCreateModal()" class="button is-primary has-text-white" style="margin-right: .75em;"> +
+              Thêm
+              mới
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="row task-list-container has-background-light">
+        <div class="col-12">
+          <div class="ml-2">
+            <h1 class="title has-text-primary">
+              Nhiệm vụ
+            </h1>
+            <div *ngIf="tasks" class="top-bar">
+              <div class="dropdown is-hoverable is-right">
+                <!-- <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <span class="icon is-small">
+                      <i class="fas fa-cog" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div> -->
+                <!-- <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <a [routerLink]="['/edit-list', selectedListId]" class="dropdown-item">
+                      Edit
+                    </a>
+                    <a (click)="onDeleteListClick()" class="dropdown-item has-text-danger">
+                      Delete
+                    </a>
+                  </div>
+                </div> -->
               </div>
-              <app-task-item [tasks]="tasks"></app-task-item>
             </div>
+            <app-task-item [tasks]="tasks"></app-task-item>
+          </div>
 
-            <div *ngIf="!tasks">
-              <h3 class="empty-state-text">Thêm mới nhiệm vụ</h3>
-            </div>
+          <div *ngIf="!isLoading && !tasks">
+            <h3 class="empty-state-text">Thêm mới nhiệm vụ</h3>
           </div>
         </div>
+      </div>
     </div>
   </div>
 
-<nz-modal [nzWidth]="500" [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent"
-  [nzFooter]="modalFooter" [nzAutofocus]="null" (nzOnCancel)="closeModal()">
-  <ng-template #modalTitle>Thêm mới danh sách</ng-template>
-  <ng-template #modalContent class="p-2">
-    <div class="row mt-1">
-      <form [formGroup]="listForm" class="m-0">
-        <nz-form-item class="row pl-0 ml-0 text-left">
-          <nz-form-control class="col-sm-12 col-md-12" [nzSpan]="12" nzHasFeedback [nzErrorTip]="titleErrorTpl">
-            <input nz-input formControlName="title" placeholder="Tiêu đề" />
-            <ng-template #titleErrorTpl let-control>
-              <ng-container *ngIf="control.hasError('required')">
-                Tiêu đề bắt buộc nhập
-              </ng-container>
-            </ng-template>
-          </nz-form-control>
-        </nz-form-item>
-      </form>
-    </div>
-  </ng-template>
-  <ng-template #modalFooter class="d-flex justify-content-between align-items-center text-center">
-    <button class="btn btn-danger" (click)="closeModal()">Hủy</button>
-    <button class="btn btn-primary ml-2" (click)="submitCreateList()">Lưu</button>
-  </ng-template>
-</nz-modal>
+  <nz-modal (nzOnCancel)="closeModal()" [(nzVisible)]="isVisible" [nzAutofocus]="null" [nzContent]="modalContent"
+            [nzFooter]="modalFooter" [nzTitle]="modalTitle" [nzWidth]="500">
+    <ng-template #modalTitle>Thêm mới danh sách</ng-template>
+    <ng-template #modalContent class="p-2">
+      <div class="row mt-1">
+        <form [formGroup]="listForm" class="m-0">
+          <nz-form-item class="row pl-0 ml-0 text-left">
+            <nz-form-control [nzErrorTip]="titleErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>
+              <input formControlName="title" nz-input placeholder="Tiêu đề"/>
+              <ng-template #titleErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Tiêu đề bắt buộc nhập
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </ng-template>
+    <ng-template #modalFooter class="d-flex justify-content-between align-items-center text-center">
+      <button (click)="closeModal()" class="btn btn-danger">Hủy</button>
+      <button (click)="submitCreateList()" class="btn btn-primary ml-2">Lưu</button>
+    </ng-template>
+  </nz-modal>
+</div>

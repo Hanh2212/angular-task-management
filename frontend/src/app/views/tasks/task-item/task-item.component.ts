@@ -27,7 +27,6 @@ export class TaskItemComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tasks']) {
-      console.log(this.tasks);
     }
   }
 
@@ -82,7 +81,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
       nzOkText: 'Xác nhận',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.listService.deleteTask(_id)
+        this.listService.deleteTask({_listId: this.listId, _id: _id})
           .subscribe({
             next: (data) => {
               this.toast.customToastr('success', data.body.message);
@@ -142,17 +141,8 @@ export class TaskItemComponent implements OnInit, OnChanges {
     this.isVisibleTask = false;
   }
 
-  onTaskClick(task: Tasks) {
-    // we want to set the task to completed
-    // this.listService.complete(task).subscribe(() => {
-    //   // the task has been set to completed successfully
-    //   console.log("Completed successully!");
-    //   // task.completed = !task?.completed;
-    // })
-  }
-
   onDeleteTaskClick(_id: string) {
-    this.listService.deleteTask(_id)
+    this.listService.deleteTask({_listId: this.listId, _id: _id})
       .subscribe({
         next: (data) => {
           this.toast.customToastr('success', data.body.message);
