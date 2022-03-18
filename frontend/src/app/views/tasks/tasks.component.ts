@@ -21,9 +21,10 @@ export class TasksComponent implements OnInit, OnDestroy {
   isEdit = false;
   isLoading = true;
   titleModal = '';
-
+  listId = '';
   listForm!: FormGroup;
   subscription!: Subscription;
+  filterBtns!: Array<any>;
 
   constructor(private listService: ListTaskService,
               private modalService: NzModalService,
@@ -35,7 +36,31 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
+    this.filterBtns = [
+      {name: 'Tất cả', value: '', class: 'btn btn-primary mr-4'},
+      {name: 'Todo', value: 'todo', class: 'btn btn-secondary mr-4'},
+      {name: 'Doing', value: 'doing', class: 'btn btn-warning mr-4'},
+      {name: 'Completed', value: 'completed', class: 'btn btn-success mr-4'},
+    ];
     this.getLists();
+  }
+
+  filterBy(value: string) {
+    console.log(value);
+    switch (value) {
+      case '':
+        this.showTasks(this.listId);
+        break;
+      case 'todo':
+        console.log('todo');
+        break;
+      case 'doing':
+        console.log('doing');
+        break;
+      case 'completed':
+        console.log('completed');
+        break;
+    }
   }
 
   getLists(): void {
@@ -60,6 +85,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   showTasks(id: string): void {
     if (id !== '') {
+      this.listId = id;
       this.listService.listIdSub.next(id);
       this.listService.getTasks({id: id}).subscribe({
         next: (data) => this.tasks = data.body.length > 0 ? data.body : null,
