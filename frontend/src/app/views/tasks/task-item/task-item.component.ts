@@ -18,6 +18,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   isLoading = true;
   listId = '';
   taskId = '';
+  listStatus!: Array<any>;
 
   constructor(private fb: FormBuilder,
     private toast: Toast,
@@ -33,8 +34,14 @@ export class TaskItemComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5)]],
+      status: ['', Validators.required],
       description: ['', Validators.required],
     });
+    this.listStatus = [
+      {name: 'To do', value: 'todo'},
+      {name: 'Doing', value: 'doing'},
+      {name: 'Completed', value: 'completed'},
+    ]
     this.getTasks();
   }
 
@@ -69,7 +76,8 @@ export class TaskItemComponent implements OnInit, OnChanges {
     this.taskForm.reset();
     this.taskForm.patchValue({
       title: task.title,
-      description: task.description
+      status: task.status,
+      description: task.description,
     })
   }
 
@@ -96,6 +104,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   }
 
   submitCreateTask(): void {
+    console.log(this.taskForm.value);
     this.isLoading = true;
     for (const key in this.taskForm.controls) {
       this.taskForm.controls[key].markAsDirty();
@@ -105,8 +114,8 @@ export class TaskItemComponent implements OnInit, OnChanges {
       return;
     }
 
-    const bodyCreate = { _listId: this.listId, title: this.taskForm.value.title, description: this.taskForm.value.description };
-    const bodyEdit = { _listId: this.listId, _id: this.taskId, title: this.taskForm.value.title, description: this.taskForm.value.description };
+    const bodyCreate = { _listId: this.listId, title: this.taskForm.value.title, status: this.taskForm.value.status, description: this.taskForm.value.description };
+    const bodyEdit = { _listId: this.listId, _id: this.taskId, title: this.taskForm.value.title, status: this.taskForm.value.status, description: this.taskForm.value.description };
 
     if (!this.isEdit) {
       this.listService.createTask(bodyCreate).subscribe({

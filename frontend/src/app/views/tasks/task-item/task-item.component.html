@@ -2,10 +2,13 @@
 <div class="row" style="margin-left: .25em;">
   <div *ngFor="let task of tasks" class="task">
     <div class="task-text d-flex flex-column">
-      <p>{{ task.title }}</p>
+      <p class="title">{{ task.title }}</p>
       <small class="text-secondary">{{ task.description }}</small>
     </div>
-    <div class="task-buttons">
+    <div class="task-buttons d-flex justify-content-center align-items-center">
+      <small *ngIf="task.status === 'doing'" class="badge badge-warning" style="margin-right: 1em;">{{task.status}}</small>
+      <small *ngIf="task.status === 'todo'" class="badge badge-primary" style="margin-right: 1em;">{{task.status}}</small>
+      <small *ngIf="task.status === 'completed'" class="badge badge-success" style="margin-right: 1em;">{{task.status}}</small>
       <i (click)="openEditTaskModal(task)" class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;"></i>
       <i (click)="showConfirm(task._id)" class="ri-delete-bin-5-fill" style="color: #e63946;"></i>
     </div>
@@ -35,6 +38,18 @@
               </ng-container>
             </ng-template>
           </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="row pl-0 ml-0 text-left">
+          <nz-form-control [nzErrorTip]="statusErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>
+          <ng-select formControlName="status" placeholder="Trạng thái">
+            <ng-option *ngFor="let item of listStatus" [value]="item.value">{{item.name}}</ng-option>
+         </ng-select>
+         <ng-template #statusErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            Trạng thái bắt buộc nhập
+          </ng-container>
+        </ng-template>
+        </nz-form-control>
         </nz-form-item>
         <nz-form-item class="row pl-0 ml-0 text-left">
           <nz-form-control [nzErrorTip]="desErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>

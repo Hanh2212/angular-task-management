@@ -1,5 +1,30 @@
 @import '../../../../main-style.scss';
 
+.badge {
+  min-width: 50px !important;
+  height: 25px !important;
+  width: 80px !important;
+  display: inline-block !important;
+  margin-bottom: .25em !important;
+  margin-left: .25em !important;
+  line-height: 1.2;
+}
+.badge-warning {
+  background-color: #fff8dd !important;
+  color: #ffa800 !important;
+}
+
+.badge-success {
+  background-color: #e8fff3 !important;
+  color: #50cd89 !important;
+}
+
+.badge-primary {
+  background-color: #f1faff !important;
+  color: #009ef7 !important;
+}
+
+
 .task {
   display: flex;
   background: #fff;
@@ -9,6 +34,13 @@
 
   align-items: center;
   box-shadow: 0 3px 2px #ccc;
+
+  p.title {
+    color: #3f4254;
+    text-transform: none;
+    font-size: 1.075em;
+    letter-spacing: 0;
+  }
 
   &:not(.complete) {
       cursor: pointer;

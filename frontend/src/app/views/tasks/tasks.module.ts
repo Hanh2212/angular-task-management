@@ -12,6 +12,7 @@ import {TaskItemComponent} from './task-item/task-item.component';
 import {ContentLoaderModule} from '@ngneat/content-loader';
 import {LoadingContentComponent} from 'src/app/components/loading-content/loading-content.component';
 import {NzIconModule} from 'ng-zorro-antd/icon';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [TasksComponent, TaskItemComponent, LoadingContentComponent],
@@ -26,6 +27,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     NzInputModule,
     ContentLoaderModule,
     NzIconModule,
+    NgSelectModule
   ],
   exports: [TasksComponent]
 })

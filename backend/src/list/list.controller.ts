@@ -19,12 +19,12 @@ export class ListController {
     }
 
     @Post('/tasks/create')
-    async addTask(@Body() body: { _listId: string, title: string, description: string }): Promise<{ message: string }> {
+    async addTask(@Body() body: { _listId: string, title: string, status: string, description: string }): Promise<{ message: string }> {
         return this.listService.addTask(body);
     }
 
     @Patch('/tasks/update')
-    async updateTask(@Body() body: { _listId: string, _id: string, title: string, description: string }) {
+    async updateTask(@Body() body: { _listId: string, _id: string, title: string, status: string, description: string }) {
         this.listService.updateTask(body);
         return { message: 'Cập nhật nhiệm vụ thành công!' };
     }
@@ -45,15 +45,15 @@ export class ListController {
         return { message: 'Cập nhật danh sách thành công!' };
     }
 
-    @Delete(':id')
-    deleteList(@Param('id') id: string) {
-        this.listService.deleteList(id);
+    @Post('/delete')
+    deleteList(@Body() body: {_id: string}) {
+        this.listService.deleteList(body);
         return { message: 'Xóa danh sách thành công!' };
     }
 
-    @Delete('/tasks/delete')
-    deleteTask(@Param('_id') _id: string) {
-        this.listService.deleteTask(_id);
+    @Post('/tasks/delete')
+    deleteTask(@Body() body: {_listId: string, _id: string}) {
+        this.listService.deleteTask(body);
         return { message: 'Xóa nhiệm vụ thành công!' };
     }
 }
