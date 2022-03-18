@@ -1,21 +1,28 @@
 <!-- <app-loading-content *ngIf="isLoading && listId !== ''  "></app-loading-content> -->
 <div class="row" style="margin-left: .25em;">
+  <div *ngIf="listId !== '' && tasks && tasks.length > 0" class="top-bar d-flex justify-content-end pr-0">
+    <div *ngFor="let item of filterBtns">
+      <button [class]="item.class" [value]="item.value" (click)="filterBy(item.value)">{{item.name}}</button>
+    </div>
+  </div>
   <div *ngFor="let task of tasks" class="task">
     <div class="task-text d-flex flex-column">
       <p class="title">{{ task.title }}</p>
       <small class="text-secondary">{{ task.description }}</small>
     </div>
     <div class="task-buttons d-flex justify-content-center align-items-center">
-      <small *ngIf="task.status === 'doing'" class="badge badge-warning" style="margin-right: 1em;">{{task.status}}</small>
-      <small *ngIf="task.status === 'todo'" class="badge badge-primary" style="margin-right: 1em;">{{task.status}}</small>
-      <small *ngIf="task.status === 'completed'" class="badge badge-success" style="margin-right: 1em;">{{task.status}}</small>
+      <small *ngIf="task.status === 'doing'" class="badge badge-warning">{{task.status}}</small>
+      <small *ngIf="task.status === 'todo'" class="badge badge-primary">{{task.status}}</small>
+      <small *ngIf="task.status === 'completed'" class="badge badge-success">{{task.status}}</small>
+      <small *ngIf="task.status === 'canceled'" class="badge badge-danger">{{task.status}}</small>
       <i (click)="openEditTaskModal(task)" class="ri-pencil-fill" style="color: #072AC8; margin-right: .25em;"></i>
       <i (click)="showConfirm(task._id)" class="ri-delete-bin-5-fill" style="color: #e63946;"></i>
     </div>
   </div>
+  <p class="mt-2 text-center" style="color: #a1a5a7;" *ngIf="tasks && tasks.length === 0">Không có nhiệm vụ nào! Nhấn
+    vào button + để thêm mới nhiệm vụ
+  </p>
 </div>
-<!-- <h3 class="empty-state-text" *ngIf="tasks.length === 0">Không có nhiệm vụ nào! Nhấn vào button + để thêm mới nhiệm vụ
-</h3> -->
 
 <div class="row mt-2 d-flex justify-content-end align-items-center">
   <div class="col-1 d-flex justify-content-end">
@@ -24,14 +31,14 @@
 </div>
 
 <nz-modal (nzOnCancel)="closeTaskModal()" [(nzVisible)]="isVisibleTask" [nzAutofocus]="null" [nzContent]="contentTask"
-          [nzFooter]="footerTask" [nzTitle]="titleTask" [nzWidth]="500">
+  [nzFooter]="footerTask" [nzTitle]="titleTask" [nzWidth]="500">
   <ng-template #titleTask>Thêm mới nhiệm vụ</ng-template>
   <ng-template #contentTask class="p-2">
     <div class="row mt-1">
       <form [formGroup]="taskForm" class="m-0">
         <nz-form-item class="row pl-0 ml-0 text-left">
           <nz-form-control [nzErrorTip]="nameErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>
-            <input formControlName="title" nz-input placeholder="Tên nhiệm vụ"/>
+            <input formControlName="title" nz-input placeholder="Tên nhiệm vụ" />
             <ng-template #nameErrorTpl let-control>
               <ng-container *ngIf="control.hasError('required')">
                 Tên nhiệm vụ bắt buộc nhập
@@ -41,15 +48,15 @@
         </nz-form-item>
         <nz-form-item class="row pl-0 ml-0 text-left">
           <nz-form-control [nzErrorTip]="statusErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>
-          <ng-select formControlName="status" placeholder="Trạng thái">
-            <ng-option *ngFor="let item of listStatus" [value]="item.value">{{item.name}}</ng-option>
-         </ng-select>
-         <ng-template #statusErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')">
-            Trạng thái bắt buộc nhập
-          </ng-container>
-        </ng-template>
-        </nz-form-control>
+            <ng-select formControlName="status" placeholder="Trạng thái">
+              <ng-option *ngFor="let item of listStatus" [value]="item.value">{{item.name}}</ng-option>
+            </ng-select>
+            <ng-template #statusErrorTpl let-control>
+              <ng-container *ngIf="control.hasError('required')">
+                Trạng thái bắt buộc nhập
+              </ng-container>
+            </ng-template>
+          </nz-form-control>
         </nz-form-item>
         <nz-form-item class="row pl-0 ml-0 text-left">
           <nz-form-control [nzErrorTip]="desErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>

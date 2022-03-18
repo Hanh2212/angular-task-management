@@ -19,6 +19,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   listId = '';
   taskId = '';
   listStatus!: Array<any>;
+  filterBtns!: Array<any>;
 
   constructor(private fb: FormBuilder,
     private toast: Toast,
@@ -38,27 +39,46 @@ export class TaskItemComponent implements OnInit, OnChanges {
       description: ['', Validators.required],
     });
     this.listStatus = [
-      {name: 'To do', value: 'todo'},
-      {name: 'Doing', value: 'doing'},
-      {name: 'Completed', value: 'completed'},
-    ]
+      { name: 'To do', value: 'todo' },
+      { name: 'Doing', value: 'doing' },
+      { name: 'Completed', value: 'completed' },
+      { name: 'Canceled', value: 'canceled' },
+    ];
+    this.filterBtns = [
+      { name: 'All', value: 'all', class: 'btn btn-secondary mr-4' },
+      { name: 'Todo', value: 'todo', class: 'btn btn-primary mr-4' },
+      { name: 'Doing', value: 'doing', class: 'btn btn-warning mr-4' },
+      { name: 'Completed', value: 'completed', class: 'btn btn-success mr-4' },
+      { name: 'Canceled', value: 'canceled', class: 'btn btn-danger mr-4' },
+    ];
     this.getTasks();
   }
 
+  filterBy(value: string) {
+    if (value === 'all') {
+      this.getTasks();
+    } else {
+      this.tasks = this.tasks.filter(task => task.status === value);
+    }
+  }
+
   getTasks(): void {
+    this.isLoading = true;
     this.listService.$listIdData.subscribe({
       next: (data) => this.listId = data,
       error: (err) => console.log(err)
     });
 
     if (this.listId !== '') {
-      // this.isLoading = true;
       this.listService.getTasks({ id: this.listId }).subscribe({
         next: (data) => {
-          this.tasks = data.body.length > 0 ? data.body : null;
-          // this.isLoading = false;
+          this.tasks = data.body.length > 0 ? data.body : [];
+          this.isLoading = false;
         },
-        error: (err) => console.log(err)
+        error: (err) => {
+          this.isLoading = false;
+          console.log(err);
+        }
       });
     }
   }
@@ -89,7 +109,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
       nzOkText: 'Xác nhận',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.listService.deleteTask({_listId: this.listId, _id: _id})
+        this.listService.deleteTask({ _listId: this.listId, _id: _id })
           .subscribe({
             next: (data) => {
               this.toast.customToastr('success', data.body.message);
@@ -151,7 +171,7 @@ export class TaskItemComponent implements OnInit, OnChanges {
   }
 
   onDeleteTaskClick(_id: string) {
-    this.listService.deleteTask({_listId: this.listId, _id: _id})
+    this.listService.deleteTask({ _listId: this.listId, _id: _id })
       .subscribe({
         next: (data) => {
           this.toast.customToastr('success', data.body.message);

@@ -1,29 +1,12 @@
 @import '../../../../main-style.scss';
 
-.badge {
-  min-width: 50px !important;
-  height: 25px !important;
-  width: 80px !important;
-  display: inline-block !important;
-  margin-bottom: .25em !important;
-  margin-left: .25em !important;
-  line-height: 1.2;
-}
-.badge-warning {
-  background-color: #fff8dd !important;
-  color: #ffa800 !important;
+.btn-primary {
+  color: #fff;
 }
 
-.badge-success {
-  background-color: #e8fff3 !important;
-  color: #50cd89 !important;
+.btn-danger {
+  background: $danger;
 }
-
-.badge-primary {
-  background-color: #f1faff !important;
-  color: #009ef7 !important;
-}
-
 
 .task {
   display: flex;
@@ -43,42 +26,45 @@
   }
 
   &:not(.complete) {
-      cursor: pointer;
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 
-      &:active {
-          transform: scale(0.95);
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:hover {
+      box-shadow: 0 0 0 5px #eeeeee;
+
+      .task-buttons {
+        opacity: 1;
+        transform: scale(1);
       }
-
-      &:hover {
-          box-shadow: 0 0 0 5px #eeeeee;
-
-          .task-buttons {
-              opacity: 1;
-              transform: scale(1);
-          }
-      }
+    }
   }
 
   &.completed .task-text {
-      text-decoration: line-through;
-      opacity: 0.8;
+    text-decoration: line-through;
+    opacity: 0.8;
   }
 
-
   .task-text {
-      display: flex;
-      flex-grow: 1;
+    display: flex;
+    flex-grow: 1;
   }
 
   .task-buttons {
-      transition: opacity 0.2s, transform 0.2s;
-      opacity: 1;
-      transform: scale(0.85);
+    transition: opacity 0.2s, transform 0.2s;
+    opacity: 1;
+    transform: scale(0.85);
 
-      i {
-        font-size: 1.75em !important;
-      }
+    .badge {
+      margin-right: 1em;
+    }
+
+    i {
+      font-size: 1.75em !important;
+    }
   }
 }
 
@@ -101,4 +87,3 @@ i.ri-add-circle-line {
 .btn-primary {
   background: $primary;
 }
-

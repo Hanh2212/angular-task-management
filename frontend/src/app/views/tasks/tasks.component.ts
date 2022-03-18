@@ -1,11 +1,11 @@
-import {Toast} from 'src/app/core/helper/toastr';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Lists} from 'src/app/model/list.model';
-import {Tasks} from 'src/app/model/task.model';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {delay, Subscription} from 'rxjs';
-import {ListTaskService} from 'src/app/services/list-task.service';
+import { Toast } from 'src/app/core/helper/toastr';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Lists } from 'src/app/model/list.model';
+import { Tasks } from 'src/app/model/task.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { delay, Subscription } from 'rxjs';
+import { ListTaskService } from 'src/app/services/list-task.service';
 
 @Component({
   selector: 'app-tasks',
@@ -27,40 +27,16 @@ export class TasksComponent implements OnInit, OnDestroy {
   filterBtns!: Array<any>;
 
   constructor(private listService: ListTaskService,
-              private modalService: NzModalService,
-              private toast: Toast,
-              private fb: FormBuilder) {
+    private modalService: NzModalService,
+    private toast: Toast,
+    private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
-    this.filterBtns = [
-      {name: 'Tất cả', value: '', class: 'btn btn-primary mr-4'},
-      {name: 'Todo', value: 'todo', class: 'btn btn-secondary mr-4'},
-      {name: 'Doing', value: 'doing', class: 'btn btn-warning mr-4'},
-      {name: 'Completed', value: 'completed', class: 'btn btn-success mr-4'},
-    ];
     this.getLists();
-  }
-
-  filterBy(value: string) {
-    console.log(value);
-    switch (value) {
-      case '':
-        this.showTasks(this.listId);
-        break;
-      case 'todo':
-        console.log('todo');
-        break;
-      case 'doing':
-        console.log('doing');
-        break;
-      case 'completed':
-        console.log('completed');
-        break;
-    }
   }
 
   getLists(): void {
@@ -87,8 +63,8 @@ export class TasksComponent implements OnInit, OnDestroy {
     if (id !== '') {
       this.listId = id;
       this.listService.listIdSub.next(id);
-      this.listService.getTasks({id: id}).subscribe({
-        next: (data) => this.tasks = data.body.length > 0 ? data.body : null,
+      this.listService.getTasks({ id: id }).subscribe({
+        next: (data) => this.tasks = data.body.length > 0 ? data.body : [],
         error: (err) => console.log(err)
       });
     }
@@ -130,7 +106,7 @@ export class TasksComponent implements OnInit, OnDestroy {
       nzOkText: 'Xác nhận',
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.listService.deleteList({_id: _id})
+        this.listService.deleteList({ _id: _id })
           .subscribe({
             next: (data) => {
               this.toast.customToastr('success', data.body.message);

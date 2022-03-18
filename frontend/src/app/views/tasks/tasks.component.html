@@ -2,48 +2,36 @@
   <div class="row d-flex">
     <div class="col-8 offset-2 task-manager-container">
       <div class="sidebar has-background-white">
-        <h1 class="title has-text-primary">
-          Danh sách
-        </h1>
+        <h1 class="title has-text-primary">Danh sách</h1>
 
         <app-loading-content *ngIf="isLoading"></app-loading-content>
-        <div *ngIf="!isLoading && lists.length > 0;" class="list-menu">
+        <div *ngIf="!isLoading && lists.length > 0" class="list-menu">
           <div (click)="showTasks(list._id)" *ngFor="let list of lists"
-               class="list-menu-item d-flex justify-content-between align-items-center" routerLinkActive="is-active">
-            <span>{{ list.title }}</span> <i (click)="showConfirm(list._id)" class="ri-delete-bin-5-fill"
-                                             style="color: #e63946;"></i>
+            class="list-menu-item d-flex justify-content-between align-items-center" routerLinkActive="is-active">
+            <span>{{ list.title }}</span>
+            <i (click)="showConfirm(list._id)" class="ri-delete-bin-5-fill" style="color: #e63946"></i>
           </div>
         </div>
         <p *ngIf="!isLoading && lists.length === 0" class="text-justify">Không có danh sách nào!</p>
 
         <div class="row">
           <div class="col-12 w-100 d-flex justify-content-center align-items-center">
-            <button (click)="openCreateModal()" class="button is-primary has-text-white" style="margin-right: .75em;"> +
-              Thêm
-              mới
+            <button (click)="openCreateModal()" class="button is-primary has-text-white" style="margin-right: 0.75em">
+              + Thêm mới
             </button>
           </div>
         </div>
-
       </div>
       <div class="row task-list-container has-background-light">
         <div class="col-12">
           <div class="ml-2">
             <div class="row d-flex justify-content-center align-items-center">
-              <h1 class="title has-text-primary">
-                Nhiệm vụ
-              </h1>
-              <div *ngIf="tasks" class="top-bar">
-                <div *ngFor="let item of filterBtns">
-                  <button [class]="item.class" [value]="item.value" (click)="filterBy(item.value)">{{item.name}}</button>
-                </div>
-              </div>
+              <h1 class="title has-text-primary">Nhiệm vụ</h1>
             </div>
             <app-task-item [tasks]="tasks"></app-task-item>
           </div>
-
-          <div *ngIf="!isLoading && !tasks">
-            <h3 class="empty-state-text">Thêm mới nhiệm vụ</h3>
+          <div *ngIf="!isLoading && !listId">
+            <h3 class="empty-state-text">Chọn 1 danh sách để xem nhiệm vụ!</h3>
           </div>
         </div>
       </div>
@@ -51,14 +39,14 @@
   </div>
 
   <nz-modal (nzOnCancel)="closeModal()" [(nzVisible)]="isVisible" [nzAutofocus]="null" [nzContent]="modalContent"
-            [nzFooter]="modalFooter" [nzTitle]="modalTitle" [nzWidth]="500">
+    [nzFooter]="modalFooter" [nzTitle]="modalTitle" [nzWidth]="500">
     <ng-template #modalTitle>Thêm mới danh sách</ng-template>
     <ng-template #modalContent class="p-2">
       <div class="row mt-1">
         <form [formGroup]="listForm" class="m-0">
           <nz-form-item class="row pl-0 ml-0 text-left">
             <nz-form-control [nzErrorTip]="titleErrorTpl" [nzSpan]="12" class="col-sm-12 col-md-12" nzHasFeedback>
-              <input formControlName="title" nz-input placeholder="Tiêu đề"/>
+              <input formControlName="title" nz-input placeholder="Tiêu đề" />
               <ng-template #titleErrorTpl let-control>
                 <ng-container *ngIf="control.hasError('required')">
                   Tiêu đề bắt buộc nhập
