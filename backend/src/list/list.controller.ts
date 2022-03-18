@@ -5,32 +5,32 @@ import { Task } from './task.schema';
 
 @Controller('lists')
 export class ListController {
-    constructor(private listService: ListService) {}
-    
+    constructor(private listService: ListService) { }
+
     @Get()
     getAllLists() {
         return this.listService.getLists();
     }
 
-    //Return all tasks that belong a specific list
-    @Get('/:id/tasks')
-    getListTasks(@Param('id') id: string) {
-        return this.listService.getTasks(id);
+    //fix lấy ds task
+    @Post('/tasks')
+    getTasks(@Body() body: { id: string }) {
+        return this.listService.getTasks(body);
     }
 
-    @Post('/:id/tasks')
-    async addTask(@Param('id') id: string, @Body('title') title: string): Promise<{message: string}> {
-        return this.listService.addTask(id, title);
+    @Post('/tasks/create')
+    async addTask(@Body() body: { _listId: string, title: string, description: string }): Promise<{ message: string }> {
+        return this.listService.addTask(body);
     }
 
-    @Patch('/:id/tasks/:taskId')
-    async updateTask(@Param('id') id: string, @Param('taskId') taskId: string, @Body('title') title: string) {
-        this.listService.updateTask(id, taskId, title);
-        return {message: 'Cập nhật nhiệm vụ thành công!'};
+    @Patch('/tasks/update')
+    async updateTask(@Body() body: { _listId: string, _id: string, title: string, description: string }) {
+        this.listService.updateTask(body);
+        return { message: 'Cập nhật nhiệm vụ thành công!' };
     }
 
     @Post()
-    addList(@Body('title') title: string): Promise<{message: string}> {
+    addList(@Body('title') title: string): Promise<{ message: string }> {
         return this.listService.addList(title);
     }
 
@@ -42,18 +42,18 @@ export class ListController {
     @Patch(':id')
     updateList(@Param('id') id: string, @Body('updateList') updateList: ListTask) {
         this.listService.updateList(id, updateList);
-        return {message: 'Cập nhật danh sách thành công!'};
+        return { message: 'Cập nhật danh sách thành công!' };
     }
 
     @Delete(':id')
     deleteList(@Param('id') id: string) {
         this.listService.deleteList(id);
-        return {message: 'Xóa danh sách thành công!'};
+        return { message: 'Xóa danh sách thành công!' };
     }
 
-    @Delete(':id/tasks/:taskId')
-    deleteTask(@Param('id') id: string, @Param('taskId') taskId: string) {
-        this.listService.deleteTask(id, taskId);
-        return {message: 'Xóa nhiệm vụ thành công!'};
+    @Delete('/tasks/delete')
+    deleteTask(@Param('_id') _id: string) {
+        this.listService.deleteTask(_id);
+        return { message: 'Xóa nhiệm vụ thành công!' };
     }
 }

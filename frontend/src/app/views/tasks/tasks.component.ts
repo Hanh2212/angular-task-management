@@ -1,11 +1,12 @@
-import { Toast } from 'src/app/core/helper/toastr';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Lists } from 'src/app/model/list.model';
-import { Tasks } from 'src/app/model/task.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { delay, Subscription } from 'rxjs';
-import { ListTaskService } from 'src/app/services/list-task.service';
+import {Toast} from 'src/app/core/helper/toastr';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Lists} from 'src/app/model/list.model';
+import {Tasks} from 'src/app/model/task.model';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NzModalService} from 'ng-zorro-antd/modal';
+import {delay, Subscription} from 'rxjs';
+import {ListTaskService} from 'src/app/services/list-task.service';
+
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
@@ -14,8 +15,6 @@ import { ListTaskService } from 'src/app/services/list-task.service';
 export class TasksComponent implements OnInit, OnDestroy {
   lists!: Lists[];
   tasks!: Tasks[];
-  tasks2!: Tasks[];
-
   selectedListId!: string;
   isVisible = false;
   isVisibleTask = false;
@@ -27,32 +26,15 @@ export class TasksComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   constructor(private listService: ListTaskService,
-    private modalService: NzModalService,
-    private toast: Toast,
-    private fb: FormBuilder) { }
+              private modalService: NzModalService,
+              private toast: Toast,
+              private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
-
-    this.tasks = [
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-      { _id: '1', _listId: 'List 1', title: 'Task1', description: 'Description 1', completed: 'false' },
-    ];
-
-    this.tasks2 = [
-      { _id: '1', _listId: 'List 1', title: 'Task 2', description: 'Description 2', completed: 'true' },
-      { _id: '2', _listId: 'List 2', title: 'Task 2', description: 'Description 2', completed: 'true' },
-      { _id: '3', _listId: 'List 3', title: 'Task 2', description: 'Description 2', completed: 'true' },
-      { _id: '4', _listId: 'List 4', title: 'Task 2', description: 'Description 2', completed: 'true' },
-      { _id: '5', _listId: 'List 5', title: 'Task 2', description: 'Description 2', completed: 'true' },
-      { _id: '6', _listId: 'List 6', title: 'Task 2', description: 'Description 2', completed: 'true' },
-    ];
     this.getLists();
   }
 
@@ -77,11 +59,10 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   showTasks(id: string): void {
-    console.log(id);
     if (id !== '') {
       this.listService.listIdSub.next(id);
-      this.listService.getTasksByList(id).subscribe({
-        next: (data) => console.log(data),
+      this.listService.getTasks({id: id}).subscribe({
+        next: (data) => this.tasks = data.body.length > 0 ? data.body : null,
         error: (err) => console.log(err)
       });
     }
@@ -96,28 +77,45 @@ export class TasksComponent implements OnInit, OnDestroy {
     if (this.listForm.invalid) {
       return;
     }
-    this.listService.createList(this.listForm.value).subscribe(data => {
-      this.toast.customToastr('success', data.body.message);
-      this.closeModal();
-      this.getLists();
-      this.isLoading = false;
-    }, err => {
-      this.isLoading = false;
-      this.closeModal();
-      console.log(err);
-    });
+    this.listService.createList(this.listForm.value)
+      .subscribe({
+        next: data => {
+          this.toast.customToastr('success', data.body.message);
+          this.closeModal();
+          this.getLists();
+          this.isLoading = false;
+        }, error: err => {
+          this.isLoading = false;
+          this.closeModal();
+          console.log(err);
+        }
+      });
   }
 
   closeModal(): void {
     this.isVisible = false;
   }
 
-  onDeleteListClick() {
-    this.listService.deleteList(this.selectedListId)
-      .subscribe({
-        next: (data) => console.log(data),
-        error: (err) => console.log(err)
-      });
+  showConfirm(_id: string): void {
+    console.log(_id);
+    this.modalService.confirm({
+      nzTitle: 'Xóa danh sách',
+      nzContent: 'Bạn có chắc muốn xóa danh sách này ?',
+      nzOkText: 'Xác nhận',
+      nzCancelText: 'Hủy',
+      nzOnOk: () => {
+        this.listService.deleteList({id: _id})
+          .subscribe({
+            next: (data) => {
+              this.toast.customToastr('success', data.body.message);
+              this.getLists();
+            },
+            error: (err) => {
+              this.toast.customToastr('error', err.toString())
+            }
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void {

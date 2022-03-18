@@ -30,31 +30,33 @@ export class ListTaskService {
     return this.httpClient.get(url, this.headerOptions);
   }
 
+  getTasks(body: any): Observable<any> {
+    const url = '/lists/tasks'
+    return this.httpClient.post(url, body, this.headerOptions);
+  }
+
   createList(body: any): Observable<any> {
     const url = '/lists';
     return this.httpClient.post(url, body, this.headerOptions)
   }
 
-  createTask(id: string, title: string, description: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks';
-    return this.httpClient.post(url, title, this.headerOptions);
+  createTask(body: {_listId: string, title: string, description: string}): Observable<any> {
+    const url = '/lists/tasks/create';
+    return this.httpClient.post(url, body, this.headerOptions);
   }
 
-  updateTask(id: string, taskId: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks?taskId=' + taskId;
-    return this.httpClient.post(url, this.headerOptions);
+  updateTask(body: {_listId: string, _id: string, title: string, description: string}): Observable<any> {
+    const url = '/lists/tasks/update';
+    return this.httpClient.patch(url, body, this.headerOptions);
   }
 
-  deleteTask(id: string, taskId: string): Observable<any> {
-    const url = '/lists?id=' + id + '/tasks?taskId=' + taskId;
-    return this.httpClient.delete(url, this.headerOptions);
+  deleteTask(body: {_listId: string, _id: string}): Observable<any> {
+    const url = '/lists/tasks/delete';
+    return this.httpClient.post(url, body, this.headerOptions);
   }
 
-  deleteList(id: string): Observable<any> {
-    const url = '/lists?id=' + id;
-    return this.httpClient.delete(url, this.headerOptions)
+  deleteList(body: {id: string}): Observable<any> {
+    const url = '/lists/delete';
+    return this.httpClient.post(url, body, this.headerOptions)
   }
-
-
-
 }

@@ -27,6 +27,7 @@
 .btn-primary {
   background: $primary;
 }
+
 .title {
   font-size: 24px;
   text-transform: uppercase;
@@ -41,6 +42,7 @@
   max-width: 350px;
 
 }
+
 .task-manager-container {
   display: flex;
   margin: 0 auto;
@@ -48,147 +50,152 @@
 }
 
 .sidebar {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 350px;
-    background: white;
-    padding: 1em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 350px;
+  min-height: 600px;
+  background: white;
+  padding: 1em;
 
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 
-    button {
-      position: absolute;
-      bottom: 1em;
-      max-width: 150px;
-      background: $btn-primary;
-      color: $white;
-      border-radius: 5px;
-      border: 3px solid transparent;
-    }
+  button {
+    position: absolute;
+    bottom: 1em;
+    max-width: 150px;
+    background: $btn-primary;
+    color: $white;
+    border-radius: 5px;
+    border: 3px solid transparent;
+  }
 }
 
 .task-list-container {
   background: #f3f6f9;
-    // position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 1em;
+  // position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1em;
 
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    .top-bar {
-        margin-bottom: 20px;
-        display: flex;
-        .title {
-            flex-grow: 1;
-            margin: 0;
-        }
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  .top-bar {
+    margin-bottom: 20px;
+    display: flex;
+
+    .title {
+      flex-grow: 1;
+      margin: 0;
     }
+  }
 
 }
 
 .list-menu {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0;
-    padding-right: .75em;
-    flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  padding-right: .75em;
+  flex-grow: 1;
+  margin-top: 1.75em;
 
-    a {
-      text-decoration: none;
-      height: 40px;
-      background: #F1FAFF;
-      // border: 1px solid #ccc;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: start;
+  div {
+    text-decoration: none;
+    height: 40px;
+    background: #F1FAFF;
+    // border: 1px solid #ccc;
+
+    &:hover,
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  .list-menu-item {
+    padding: 5px;
+    border-radius: 5px;
+    color: $primary;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 5px;
+
+    &:hover {
+      background: $primary;
+      color: $white;
     }
 
-    .list-menu-item {
-        padding: 5px;
-        border-radius: 5px;
-        color: $primary;
-        font-weight: bold;
-        width: 100%;
-        margin-bottom: 5px;
-
-        &:hover {
-            background: $primary;
-            color: $white;
-        }
-
-        &.is-active {
-            background-color: #cff8ef;
-            color: rgb(0, 100, 80) !important;
-        }
+    &.is-active {
+      background-color: #cff8ef;
+      color: rgb(0, 100, 80) !important;
     }
+  }
 }
 
 .task {
-    display: flex;
-    background: #fff;
-    padding: .5em;
-    border-radius: 5px;
-    margin-top: 10px;
+  display: flex;
+  background: #fff;
+  padding: .5em;
+  border-radius: 5px;
+  margin-top: 10px;
 
-    align-items: center;
-    box-shadow: 0 3px 2px #ccc;
+  align-items: center;
+  box-shadow: 0 3px 2px #ccc;
 
-    &:not(.complete) {
-        cursor: pointer;
-        transition: box-shadow 0.2s ease, transform 0.2s ease;
+  &:not(.complete) {
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 
-        &:active {
-            transform: scale(0.95);
-        }
-
-        &:hover {
-            box-shadow: 0 0 0 5px #eeeeee;
-
-            .task-buttons {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+    &:active {
+      transform: scale(0.95);
     }
 
-    &.completed .task-text {
-        text-decoration: line-through;
-        opacity: 0.8;
-    }
+    &:hover {
+      box-shadow: 0 0 0 5px #eeeeee;
 
-
-    .task-text {
-        display: flex;
-        flex-grow: 1;
-    }
-
-    .task-buttons {
-        transition: opacity 0.2s, transform 0.2s;
+      .task-buttons {
         opacity: 1;
-        transform: scale(0.85);
-
-        i {
-          font-size: 1.75em !important;
-        }
+        transform: scale(1);
+      }
     }
+  }
+
+  &.completed .task-text {
+    text-decoration: line-through;
+    opacity: 0.8;
+  }
+
+
+  .task-text {
+    display: flex;
+    flex-grow: 1;
+  }
+
+  .task-buttons {
+    transition: opacity 0.2s, transform 0.2s;
+    opacity: 1;
+    transform: scale(0.85);
+
+    i {
+      font-size: 1.75em !important;
+    }
+  }
 }
 
 i.ri-add-circle-line {
-    font-size: 2.5em;
-    color: $primary;
+  font-size: 2.5em;
+  color: $primary;
 
-    &:hover {
-      cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .empty-state-text {
-    font-size: 20px;
-    color: #777;
-    text-align: center;
+  font-size: 20px;
+  color: #777;
+  text-align: center;
 }
