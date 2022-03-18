@@ -12,6 +12,9 @@ $white: #fff;
 // Update Bulma's global variables
 $family-sans-serif: "Roboto", sans-serif;
 $primary: #5465ff;
+$warning: #ffa800;
+$success: #50cd89;
+$danger: #f1416c;
 
 $link: $turquoise;
 
@@ -67,5 +70,19 @@ html, body {
     width: 350px;
     max-width: 350px;
 
+}
+
+.btn-primary {
+  background: $primary;
+}
+.btn-warning {
+  color: $white;
+  background: $warning;
+}
+.btn-success {
+  background: $success;
+}
+.btn-danger {
+  background: $danger;
 }
 
