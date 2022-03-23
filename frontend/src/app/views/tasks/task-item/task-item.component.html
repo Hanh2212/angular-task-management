@@ -1,5 +1,5 @@
 <!-- <app-loading-content *ngIf="isLoading && listId !== ''  "></app-loading-content> -->
-<div class="row" style="margin-left: .25em;">
+<div class="row" style="margin-left: .25em;" #main>
   <div *ngIf="listId !== '' && tasks && tasks.length > 0" class="top-bar d-flex justify-content-end pr-0">
     <div *ngFor="let item of filterBtns">
       <button [class]="item.class" [value]="item.value" (click)="filterBy(item.value)">{{item.name}}</button>
