@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { bounceOutDownOnLeaveAnimation, fadeInLeftOnEnterAnimation, fadeOutDownOnLeaveAnimation, fadeOutRightOnLeaveAnimation } from 'angular-animations';
 import gsap from 'gsap';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Toast } from 'src/app/core/helper/toastr';
@@ -9,7 +10,11 @@ import { ListTaskService } from 'src/app/services/list-task.service';
 @Component({
   selector: 'app-task-item',
   templateUrl: './task-item.component.html',
-  styleUrls: ['./task-item.component.scss']
+  styleUrls: ['./task-item.component.scss'],
+  animations: [
+    fadeInLeftOnEnterAnimation({ anchor: 'enter', duration: 800, delay: 100, translate: '100px' }),
+    fadeOutRightOnLeaveAnimation({ anchor: 'leave', duration: 1000, delay: 300, translate: '220px' })
+]
 })
 export class TaskItemComponent implements OnInit, OnChanges {
   @Input() tasks!: Tasks[];

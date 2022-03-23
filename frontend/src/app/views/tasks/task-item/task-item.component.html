@@ -5,7 +5,7 @@
       <button [class]="item.class" [value]="item.value" (click)="filterBy(item.value)">{{item.name}}</button>
     </div>
   </div>
-  <div *ngFor="let task of tasks" class="task">
+  <div *ngFor="let task of tasks" class="task" [@enter] [@leave]>
     <div class="task-text d-flex flex-column">
       <p class="title">{{ task.title }}</p>
       <small class="text-secondary">{{ task.description }}</small>
