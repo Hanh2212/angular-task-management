@@ -1,5 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { fadeOutRightOnLeaveAnimation, fadeInLeftOnEnterAnimation } from 'angular-animations';
+import gsap from 'gsap';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Toast } from 'src/app/core/helper/toastr';
 import { Tasks } from 'src/app/model/task.model';
@@ -8,7 +10,11 @@ import { ListTaskService } from 'src/app/services/list-task.service';
 @Component({
   selector: 'app-task-item',
   templateUrl: './task-item.component.html',
-  styleUrls: ['./task-item.component.scss']
+  styleUrls: ['./task-item.component.scss'],
+  animations: [
+    fadeInLeftOnEnterAnimation({ anchor: 'enter', duration: 800, delay: 300, translate: '100px' }),
+    fadeOutRightOnLeaveAnimation({ anchor: 'leave', duration: 800, delay: 200, translate: '220px' })
+  ]
 })
 export class TaskItemComponent implements OnInit, OnChanges {
   @Input() tasks!: Tasks[];
@@ -21,10 +27,13 @@ export class TaskItemComponent implements OnInit, OnChanges {
   listStatus!: Array<any>;
   filterBtns!: Array<any>;
 
+  @ViewChild('main', { static: true }) main!: ElementRef<HTMLDivElement>;
+
   constructor(private fb: FormBuilder,
     private toast: Toast,
     private modalService: NzModalService,
-    private listService: ListTaskService,) { }
+    private listService: ListTaskService,
+    private cdr: ChangeDetectorRef) { }
 
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -51,7 +60,17 @@ export class TaskItemComponent implements OnInit, OnChanges {
       { name: 'Completed', value: 'completed', class: 'btn btn-success mr-4' },
       { name: 'Canceled', value: 'canceled', class: 'btn btn-danger mr-4' },
     ];
+    // this.initAnimations();
     this.getTasks();
+  }
+
+  initAnimations(): void {
+    gsap.from(this.main.nativeElement, {
+      delay: 1,
+      duration: 2,
+      opacity: 0,
+      y: -50
+    });
   }
 
   filterBy(value: string) {
@@ -73,6 +92,12 @@ export class TaskItemComponent implements OnInit, OnChanges {
       this.listService.getTasks({ id: this.listId }).subscribe({
         next: (data) => {
           this.tasks = data.body.length > 0 ? data.body : [];
+          gsap.from(this.main.nativeElement, {
+            delay: 1,
+            duration: 2,
+            opacity: 0,
+            y: -50
+          });
           this.isLoading = false;
         },
         error: (err) => {
