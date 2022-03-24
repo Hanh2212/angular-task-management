@@ -6,11 +6,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { delay, Subscription } from 'rxjs';
 import { ListTaskService } from 'src/app/services/list-task.service';
+import { slideInLeftOnEnterAnimation, slideOutLeftOnLeaveAnimation } from 'angular-animations';
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss'],
+  animations: [
+    slideInLeftOnEnterAnimation({ anchor: 'enter', duration: 800, delay: 300, translate: '100px' }),
+    slideOutLeftOnLeaveAnimation({ anchor: 'leave', duration: 800, delay: 200, translate: '220px' })
+]
 })
 export class TasksComponent implements OnInit, OnDestroy {
   lists!: Lists[];
