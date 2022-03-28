@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiEndpoint: 'http://localhost:6789'
+  apiEndpoint: 'https://nestjs-be.herokuapp.com'
 };
