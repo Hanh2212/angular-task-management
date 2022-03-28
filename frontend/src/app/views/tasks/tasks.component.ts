@@ -1,5 +1,5 @@
 import { Toast } from 'src/app/core/helper/toastr';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Lists } from 'src/app/model/list.model';
 import { Tasks } from 'src/app/model/task.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,7 +7,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { delay, Subscription } from 'rxjs';
 import { ListTaskService } from 'src/app/services/list-task.service';
 import { slideInLeftOnEnterAnimation, slideOutLeftOnLeaveAnimation } from 'angular-animations';
-
+import gsap from 'gsap';
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
@@ -31,6 +31,8 @@ export class TasksComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   filterBtns!: Array<any>;
 
+  @ViewChild('main', { static: true }) main!: ElementRef<HTMLDivElement>;
+
   constructor(private listService: ListTaskService,
     private modalService: NzModalService,
     private toast: Toast,
@@ -41,7 +43,18 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.listForm = this.fb.group({
       title: ['', Validators.required]
     });
+    // this.initAnimations();
     this.getLists();
+  }
+
+  initAnimations(): void {
+    gsap.from(this.main.nativeElement.childNodes, {
+      delay: 0.5,
+      duration: 0.4,
+      opacity: 0.5,
+      y: -20,
+      stagger: 0.15
+    });
   }
 
   getLists(): void {
