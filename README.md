@@ -25,7 +25,7 @@
 ### Angular application and simple Nest API
 - [x] Easy to understand project structure
 - [x] Simple CRUD list and its tasks
-- [x] Search/filter tasks
+- [x] Filter tasks by status
 
 While working with this application, I have the opportunity to revisit some of the interesting topics:
 - Deploy Angular application to Netlify
