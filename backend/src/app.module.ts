@@ -12,7 +12,7 @@ import { PassportModule } from '@nestjs/passport';
   imports: [MongooseModule.forRoot('mongodb+srv://hanhdh:Hanh1997@tasks.7upq6.mongodb.net/test?retryWrites=true&w=majority'),
     AuthModule,
   ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '../..', 'frontend/dist/frontend'),
+    rootPath: join(__dirname, '../', 'front/'),
   }),
   PassportModule.register({ defaultStrategy: 'jwt' }),
     ListModule],
